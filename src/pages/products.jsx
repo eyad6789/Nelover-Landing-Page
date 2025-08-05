@@ -1,3 +1,5 @@
+// App.jsx
+import React from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Highlights from '../components/Highlights';
@@ -9,8 +11,7 @@ import * as Sentry from '@sentry/react';
 
 const App = () => {
   return (
-    <main>
-      <Navbar />
+    <main className="bg-black">
       <Hero />
       <Highlights />
       <Model />
