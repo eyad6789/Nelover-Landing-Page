@@ -29,19 +29,19 @@
 
 ## 👨‍💻 About the Author
 
-**Eyad Qasim** - Passionate Full Stack Developer from Iraq 🇮🇶
+**Eyad Qasim** - Passionate Front End Developer from Iraq 🇮🇶
 
-🚀 **Expertise**:
+🚀 **Junior**:
 - React.js & Modern Frontend Development
 - UI/UX Design with Tailwind CSS
 - Smart Garden Technology Innovation
 - E-commerce Platform Development
-
+<!--
 💼 **Portfolio**: [eyadqasim.dev](https://eyadqasim.dev)  
 📧 **Email**: [eyad@nelover.com](mailto:eyad@nelover.com)  
 💼 **LinkedIn**: [linkedin.com/in/eyadqasim](https://linkedin.com/in/eyadqasim)  
 🐙 **GitHub**: [github.com/eyadqasim](https://github.com/eyadqasim)
-
+-->
 > *"Building the future of sustainable urban agriculture through innovative technology and beautiful design."* - Eyad Qasim
 
 ## 🌟 Features
