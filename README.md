@@ -2,13 +2,17 @@
 
 > **Revolutionary indoor gardening technology that grows fresh food year-round. No soil, no mess, no experience needed.**
 
+**👨‍💻 Author**: [Eyad Qasim](https://github.com/eyadqasim) - Full Stack Developer & Smart Garden Innovator
+
 ![Nelover Logo](https://img.shields.io/badge/Nelover-Smart%20Gardens-green?style=for-the-badge&logo=leaf)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge)
 ![Version](https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge)
+![Author](https://img.shields.io/badge/Author-Eyad%20Qasim-purple?style=for-the-badge)
 
 ## 📋 Table of Contents
 
+- [👨‍💻 About the Author](#-about-the-author)
 - [🌟 Features](#-features)
 - [🚀 Demo](#-demo)
 - [💻 Technologies](#-technologies)
@@ -22,6 +26,23 @@
 - [🤝 Contributing](#-contributing)
 - [📞 Contact](#-contact)
 - [📄 License](#-license)
+
+## 👨‍💻 About the Author
+
+**Eyad Qasim** - Passionate Full Stack Developer from Iraq 🇮🇶
+
+🚀 **Expertise**:
+- React.js & Modern Frontend Development
+- UI/UX Design with Tailwind CSS
+- Smart Garden Technology Innovation
+- E-commerce Platform Development
+
+💼 **Portfolio**: [eyadqasim.dev](https://eyadqasim.dev)  
+📧 **Email**: [eyad@nelover.com](mailto:eyad@nelover.com)  
+💼 **LinkedIn**: [linkedin.com/in/eyadqasim](https://linkedin.com/in/eyadqasim)  
+🐙 **GitHub**: [github.com/eyadqasim](https://github.com/eyadqasim)
+
+> *"Building the future of sustainable urban agriculture through innovative technology and beautiful design."* - Eyad Qasim
 
 ## 🌟 Features
 
@@ -394,9 +415,14 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 ## 📞 Contact
 
 ### 🏢 **Nelover Team**
+**Founded & Developed by Eyad Qasim**
 - **Website**: [https://nelover.com](https://nelover.com)
 - **Email**: [Eduru.Coie@Gmail.Com](mailto:Eduru.Coie@Gmail.Com)
 - **Phone**: [+964 773 6285 961](tel:+9647736285961)
+
+**👨‍💻 Lead Developer**: Eyad Qasim  
+📧 **Developer Email**: [eyad@nelover.com](mailto:eyad@nelover.com)  
+💼 **Portfolio**: [eyadqasim.dev](https://eyadqasim.dev)
 
 ### 📍 **Office Locations**
 **Baghdad Office** (Main)  
@@ -423,10 +449,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### 🌱 **Growing the Future of Indoor Gardening** 🌱
 
-Made with ❤️ in Iraq by the Nelover Team
+**Created with ❤️ in Iraq 🇮🇶 by [Eyad Qasim](https://github.com/eyadqasim)**
 
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/nelover-smart-gardens?style=social)](https://github.com/yourusername/nelover-smart-gardens)
+*Full Stack Developer | Smart Garden Innovator | UI/UX Designer*
+
+[![GitHub stars](https://img.shields.io/github/stars/eyadqasim/nelover-smart-gardens?style=social)](https://github.com/eyadqasim/nelover-smart-gardens)
 [![Twitter Follow](https://img.shields.io/twitter/follow/nelover_iraq?style=social)](https://twitter.com/nelover_iraq)
+[![Portfolio](https://img.shields.io/badge/Portfolio-eyadqasim.dev-green?style=social&logo=globe)](https://eyadqasim.dev)
+
+**💼 Connect with Eyad:**  
+[LinkedIn](https://linkedin.com/in/eyadqasim) • [GitHub](https://github.com/eyadqasim) • [Portfolio](https://eyadqasim.dev) • [Email](mailto:eyad@nelover.com)
 
 </div>
 
