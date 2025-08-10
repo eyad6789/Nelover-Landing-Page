@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, ChevronRight, Leaf, Users, Target, Award, ArrowRight, Globe, Heart, Zap } from 'lucide-react';
+import { 
+  ChevronDown, ChevronRight, Leaf, Users, Target, Award, ArrowRight, 
+  Globe, Heart, Zap, Play, Star, Shield, Truck, Clock, Droplets, 
+  Sun, Wifi, Calendar, TrendingUp, Eye, X, CheckCircle, Lightbulb
+} from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-
-const NelovelAboutPage = () => {
+// Main About Page Component
+const NelovelAboutPageOptimized = () => {
   const [expandedSection, setExpandedSection] = useState('who-we-are');
   const [isVisible, setIsVisible] = useState({});
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [activeValue, setActiveValue] = useState(0);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
 
   // Intersection Observer for scroll animations
   useEffect(() => {
@@ -27,14 +33,13 @@ const NelovelAboutPage = () => {
       });
     }, observerOptions);
 
-    // Observe all sections
     const sections = document.querySelectorAll('[data-animate]');
     sections.forEach((section) => observer.observe(section));
 
     return () => observer.disconnect();
   }, []);
 
-  // Mouse move effect for hero section
+  // Mouse move effect
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePosition({
@@ -47,47 +52,83 @@ const NelovelAboutPage = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // Auto-rotate values every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveValue(prev => (prev + 1) % 3);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   const sections = [
     {
       id: 'who-we-are',
       title: 'Who We Are',
-      content: `We are Nelover, a passionate team of innovators, gardeners, and technology enthusiasts united by a simple belief: everyone deserves access to fresh, healthy food grown in their own home. Our diverse team combines expertise in sustainable agriculture, IoT technology, and user experience design to create intelligent indoor gardening solutions that make growing fresh produce accessible, enjoyable, and rewarding for everyone.`
+      icon: Users,
+      content: `We are Nelover, a passionate team of innovators, gardeners, and technology enthusiasts united by a simple belief: everyone deserves access to fresh, healthy food grown in their own home. Our diverse team combines expertise in sustainable agriculture, IoT technology, and user experience design to create intelligent indoor gardening solutions that make growing fresh produce accessible, enjoyable, and rewarding for everyone.`,
+      highlight: "passionate team of innovators"
     },
     {
       id: 'what-we-do',
       title: 'What We Do & Did',
-      content: `We design and manufacture smart indoor gardening systems that revolutionize how people grow food at home. Our flagship products, the Nelover Garden Compact and Plus, feature advanced hydroponic technology, AI-powered growing optimization, and seamless smartphone integration. Since our founding, we've helped over 50,000 families grow fresh herbs, vegetables, and greens year-round, reducing their environmental footprint while improving their health and wellbeing.`
+      icon: Target,
+      content: `We design and manufacture smart indoor gardening systems that revolutionize how people grow food at home. Our flagship products, the Nelover Garden Compact and Plus, feature advanced hydroponic technology, AI-powered growing optimization, and seamless smartphone integration. Since our founding, we've helped over 50,000 families grow fresh herbs, vegetables, and greens year-round, reducing their environmental footprint while improving their health and wellbeing.`,
+      highlight: "50,000 families"
     },
     {
       id: 'goals-vision',
       title: 'Our Goals & Vision',
-      content: `We envision a world where every home has access to fresh, pesticide-free produce regardless of climate, season, or location. Our mission is to democratize fresh food production through intelligent technology that makes gardening effortless and enjoyable. By 2030, we aim to have Nelover gardens in 1 million homes worldwide, creating a global network of sustainable food production that reduces transportation emissions and promotes healthier communities.`
+      icon: Lightbulb,
+      content: `We envision a world where every home has access to fresh, pesticide-free produce regardless of climate, season, or location. Our mission is to democratize fresh food production through intelligent technology that makes gardening effortless and enjoyable. By 2030, we aim to have Nelover gardens in 1 million homes worldwide, creating a global network of sustainable food production that reduces transportation emissions and promotes healthier communities.`,
+      highlight: "1 million homes worldwide"
     }
   ];
 
   const stats = [
-    { number: '50K+', label: 'Happy Gardeners', icon: Users },
-    { number: '2M+', label: 'Plants Grown', icon: Leaf },
-    { number: '15+', label: 'Countries Served', icon: Globe },
-    { number: '98%', label: 'Success Rate', icon: Award }
+    { number: '50K+', label: 'Happy Gardeners', icon: Users, color: 'from-blue-500 to-cyan-500' },
+    { number: '2M+', label: 'Plants Grown', icon: Leaf, color: 'from-green-500 to-emerald-500' },
+    { number: '15+', label: 'Countries Served', icon: Globe, color: 'from-purple-500 to-pink-500' },
+    { number: '98%', label: 'Success Rate', icon: Award, color: 'from-yellow-500 to-orange-500' }
   ];
 
   const values = [
     {
       icon: Heart,
       title: 'Sustainability First',
-      description: 'Every decision we make considers environmental impact and long-term sustainability.'
+      description: 'Every decision we make considers environmental impact and long-term sustainability for our planet.',
+      color: 'from-red-500 to-pink-500',
+      features: ['Carbon neutral shipping', 'Recyclable materials', 'Energy-efficient systems']
     },
     {
       icon: Zap,
       title: 'Innovation Driven',
-      description: 'We continuously push boundaries to make indoor gardening smarter and more efficient.'
+      description: 'We continuously push boundaries to make indoor gardening smarter and more efficient.',
+      color: 'from-yellow-500 to-orange-500',
+      features: ['AI optimization', 'IoT integration', 'Continuous updates']
     },
     {
       icon: Users,
       title: 'Community Focused',
-      description: 'We build products that bring people together around the joy of growing fresh food.'
+      description: 'We build products that bring people together around the joy of growing fresh food.',
+      color: 'from-blue-500 to-cyan-500',
+      features: ['User community', '24/7 support', 'Growing guides']
     }
+  ];
+
+  const timeline = [
+    { year: '2022', title: 'Founded', description: 'Nelover was born from a vision to revolutionize home gardening' },
+    { year: '2023', title: 'First Product', description: 'Launched Garden Compact, our first smart garden system' },
+    { year: '2024', title: 'Global Expansion', description: 'Reached 15 countries and 50,000+ happy customers' },
+    { year: '2025', title: 'Innovation Award', description: 'Won the prestigious Innovation Award for sustainable technology' }
+  ];
+
+  const teamMembers = [
+    { name: 'Sarah Chen', role: 'CEO & Co-founder', image: 'https://images.unsplash.com/photo-1494790108755-2616b612b15c?w=300&h=300&fit=crop&crop=face' },
+    { name: 'Marcus Johnson', role: 'CTO & Co-founder', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face' },
+    { name: 'Elena Rodriguez', role: 'Head of Design', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face' },
+    { name: 'Dr. Ahmed Hassan', role: 'Lead Scientist', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face' },
+    { name: 'Lisa Wang', role: 'Operations Director', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=face' },
+    { name: 'Tom Mitchell', role: 'Head of Engineering', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face' }
   ];
 
   const toggleSection = (sectionId) => {
@@ -96,83 +137,178 @@ const NelovelAboutPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <Navbar />
+      <Navbar currentPage="about" />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-green-50">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
+      {/* Enhanced Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-green-900 via-emerald-800 to-green-900 min-h-screen flex items-center">
+        {/* Dynamic Background */}
+        <div className="absolute inset-0">
           <div 
-            className="absolute w-96 h-96 bg-green-200/20 rounded-full blur-3xl animate-pulse"
+            className="absolute inset-0 opacity-30"
             style={{
-              left: `${mousePosition.x * 0.1}%`,
-              top: `${mousePosition.y * 0.1}%`,
-              animationDelay: '0s'
-            }}
-          />
-          <div 
-            className="absolute w-64 h-64 bg-green-300/30 rounded-full blur-2xl animate-pulse"
-            style={{
-              right: `${mousePosition.x * 0.05}%`,
-              bottom: `${mousePosition.y * 0.05}%`,
-              animationDelay: '1s'
+              background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(34, 197, 94, 0.3) 0%, rgba(16, 185, 129, 0.2) 50%, transparent 70%)`
             }}
           />
         </div>
+
+        {/* Floating Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(15)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute animate-float opacity-20"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+                animationDuration: `${5 + Math.random() * 10}s`,
+              }}
+            >
+              <Leaf className="w-4 h-4 text-green-300 rotate-12" />
+            </div>
+          ))}
+        </div>
         
-        <div className="max-w-6xl mx-auto px-6 py-20 relative z-10">
-          <div className="text-center mb-16" data-animate id="hero-text">
-            <h1 className={`text-5xl md:text-7xl font-light text-gray-900 mb-6 transition-all duration-1000 ${
-              isVisible['hero-text'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-            }`}>
-              Growing the Future
-            </h1>
-            <p className={`text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed transition-all duration-1000 delay-300 ${
-              isVisible['hero-text'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-            }`}>
-              We're on a mission to bring fresh, sustainable food production into every home through intelligent indoor gardening technology.
-            </p>
-          </div>
-          
-          {/* Hero Image Placeholder */}
-          <div className="relative max-w-4xl mx-auto" data-animate id="hero-image">
-            <div className={`aspect-video bg-gradient-to-br from-green-100 to-green-200 rounded-3xl shadow-2xl overflow-hidden transition-all duration-1000 delay-500 transform hover:scale-105 hover:shadow-3xl ${
-              isVisible['hero-image'] ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-20 opacity-0 scale-95'
-            }`}>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-green-800">
-                  <Leaf className="w-16 h-16 mx-auto mb-4 opacity-50 animate-bounce" />
-                  <p className="text-lg font-medium">Our Story Video</p>
-                  <p className="text-sm opacity-75">Coming Soon</p>
+        <div className="max-w-7xl mx-auto px-6 py-20 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <div data-animate id="hero-content">
+              <div className={`transition-all duration-1000 ${
+                isVisible['hero-content'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+              }`}>
+                <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-8">
+                  <Award className="w-4 h-4 text-green-300" />
+                  <span className="text-sm font-medium text-white">Innovation Award Winner 2024</span>
+                </div>
+
+                <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6 text-white">
+                  Growing the
+                  <span className="block bg-gradient-to-r from-green-300 via-emerald-300 to-green-400 bg-clip-text text-transparent">
+                    Future
+                  </span>
+                </h1>
+                
+                <p className="text-xl text-green-100 mb-8 leading-relaxed">
+                  We're on a mission to bring fresh, sustainable food production into every home through intelligent indoor gardening technology that makes growing easier than ever.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                  <button 
+                    onClick={() => setVideoModalOpen(true)}
+                    className="group bg-white/20 backdrop-blur-sm border border-white/30 text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-gray-800 transition-all duration-300 flex items-center justify-center"
+                  >
+                    <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                    Watch Our Story
+                  </button>
+                  <button className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105">
+                    Meet The Team
+                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+
+                {/* Quick Stats */}
+                <div className="grid grid-cols-3 gap-6">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-white mb-1">50K+</div>
+                    <div className="text-sm text-green-200">Customers</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-white mb-1">15+</div>
+                    <div className="text-sm text-green-200">Countries</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-white mb-1">98%</div>
+                    <div className="text-sm text-green-200">Success Rate</div>
+                  </div>
                 </div>
               </div>
-              {/* Animated Decorative Elements */}
-              <div className="absolute top-8 left-8 w-4 h-4 bg-green-400/30 rounded-full animate-ping"></div>
-              <div className="absolute top-12 left-16 w-2 h-2 bg-green-500/40 rounded-full animate-ping delay-1000"></div>
-              <div className="absolute bottom-8 right-8 w-6 h-6 bg-green-300/25 rounded-full animate-pulse"></div>
-              <div className="absolute bottom-16 right-20 w-3 h-3 bg-green-400/35 rounded-full animate-pulse delay-500"></div>
+            </div>
+
+            {/* Right Visual */}
+            <div className={`transition-all duration-1000 delay-500 ${
+              isVisible['hero-content'] ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
+            }`}>
+              <div className="relative">
+                <div className="aspect-square bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-3xl backdrop-blur-sm border border-white/20 p-8">
+                  <div className="h-full bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center relative overflow-hidden">
+                    <div className="text-center text-white">
+                      <div className="w-24 h-24 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                        <Leaf className="w-12 h-12" />
+                      </div>
+                      <h4 className="text-2xl font-bold mb-4">Our Mission</h4>
+                      <p className="text-white/80">Making fresh food accessible to everyone, everywhere</p>
+                    </div>
+                    
+                    {/* Floating decorative elements */}
+                    <div className="absolute top-4 right-4 w-3 h-3 bg-white/30 rounded-full animate-ping"></div>
+                    <div className="absolute bottom-4 left-4 w-2 h-2 bg-white/40 rounded-full animate-ping delay-1000"></div>
+                    <div className="absolute top-1/2 left-4 w-1 h-1 bg-white/50 rounded-full animate-pulse delay-500"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Video Modal */}
+        {videoModalOpen && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl p-6 max-w-4xl w-full">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-2xl font-bold text-gray-800">Our Story</h3>
+                <button 
+                  onClick={() => setVideoModalOpen(false)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="aspect-video bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center">
+                <div className="text-center text-green-800">
+                  <Play className="w-16 h-16 mx-auto mb-4" />
+                  <p className="text-lg font-medium">Video Coming Soon</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <style jsx>{`
+          @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+          }
+          .animate-float { animation: float linear infinite; }
+        `}</style>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-6" data-animate id="stats-section">
+      {/* Enhanced Stats Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6" data-animate id="stats-section">
+          <div className="text-center mb-16">
+            <h2 className={`text-4xl md:text-5xl font-bold text-gray-800 mb-4 transition-all duration-1000 ${
+              isVisible['stats-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+            }`}>
+              Our Impact in Numbers
+            </h2>
+            <div className={`w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full transition-all duration-1000 delay-300 ${
+              isVisible['stats-section'] ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'
+            }`}></div>
+          </div>
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <div 
                 key={index} 
-                className={`text-center transform transition-all duration-700 hover:scale-110 ${
+                className={`text-center group transition-all duration-700 hover:scale-110 ${
                   isVisible['stats-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
                 }`}
-                style={{ transitionDelay: `${index * 100 + 200}ms` }}
+                style={{ transitionDelay: `${index * 150 + 200}ms` }}
               >
-                <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all duration-300 hover:bg-green-200 hover:rotate-6 group">
-                  <stat.icon className="w-8 h-8 text-green-600 transition-transform duration-300 group-hover:scale-110" />
+                <div className={`w-20 h-20 bg-gradient-to-r ${stat.color} rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:rotate-6`}>
+                  <stat.icon className="w-10 h-10 text-white group-hover:scale-110 transition-transform duration-300" />
                 </div>
-                <div className="text-3xl font-bold text-gray-900 mb-2 transition-all duration-300 hover:text-green-600">{stat.number}</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2 group-hover:text-green-600 transition-colors duration-300">{stat.number}</div>
                 <div className="text-gray-600 font-medium">{stat.label}</div>
               </div>
             ))}
@@ -180,34 +316,44 @@ const NelovelAboutPage = () => {
         </div>
       </section>
 
-      {/* Main About Section - Your Original Component Integrated */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
-        <div className="max-w-6xl mx-auto px-6" data-animate id="about-section">
-          <h2 className={`text-4xl md:text-6xl font-light mb-12 bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent text-center transition-all duration-1000 ${
-            isVisible['about-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}>
-            WHO WE ARE?
-          </h2>
+      {/* Enhanced Main About Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-green-50">
+        <div className="max-w-7xl mx-auto px-6" data-animate id="about-section">
+          <div className="text-center mb-16">
+            <h2 className={`text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent transition-all duration-1000 ${
+              isVisible['about-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+            }`}>
+              Our Story
+            </h2>
+            <div className={`w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full transition-all duration-1000 delay-300 ${
+              isVisible['about-section'] ? 'scale-x-100 opacity-100' : 'scale-x-0 opacity-0'
+            }`}></div>
+          </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            {/* Left Column - Accordion Content */}
-            <div className="space-y-1">
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            {/* Left Column - Enhanced Accordion */}
+            <div className="space-y-6">
               {sections.map((section, index) => (
                 <div 
                   key={section.id} 
-                  className={`overflow-hidden transition-all duration-500 ${
+                  className={`bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden ${
                     isVisible['about-section'] ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'
                   }`}
-                  style={{ transitionDelay: `${index * 150 + 400}ms` }}
+                  style={{ transitionDelay: `${index * 200 + 400}ms` }}
                 >
                   {/* Section Header */}
                   <button
                     onClick={() => toggleSection(section.id)}
-                    className="w-full px-6 py-5 flex items-center justify-between transition-all duration-300 hover:bg-gray-50 rounded-lg group"
+                    className="w-full px-8 py-6 flex items-center justify-between transition-all duration-300 hover:bg-green-50 group"
                   >
-                    <h3 className="text-xl font-bold text-gray-800 text-left group-hover:text-green-600 transition-colors duration-300">
-                      {section.title}
-                    </h3>
+                    <div className="flex items-center space-x-4">
+                      <div className={`p-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 text-white transition-all duration-300 group-hover:scale-110 group-hover:rotate-12`}>
+                        <section.icon className="w-6 h-6" />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-800 text-left group-hover:text-green-600 transition-colors duration-300">
+                        {section.title}
+                      </h3>
+                    </div>
                     <div className="ml-4 flex-shrink-0">
                       {expandedSection === section.id ? (
                         <ChevronDown className="w-6 h-6 text-green-600 transition-all duration-300 group-hover:scale-110" />
@@ -221,14 +367,23 @@ const NelovelAboutPage = () => {
                   <div className={`overflow-hidden transition-all duration-500 ease-in-out ${
                     expandedSection === section.id ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                   }`}>
-                    <div className="px-6 pb-6">
-                      <div className={`h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-4 transition-all duration-500 ${
+                    <div className="px-8 pb-8">
+                      <div className={`h-px bg-gradient-to-r from-transparent via-green-300 to-transparent mb-6 transition-all duration-500 ${
                         expandedSection === section.id ? 'scale-x-100' : 'scale-x-0'
                       }`}></div>
                       <p className={`text-gray-700 leading-relaxed text-base transition-all duration-500 delay-200 ${
-                        expandedSection === section.id ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'
+                        expandedSection === section.id ? 'translate-y-0 opacity-100' : '-translate-y-3 opacity-0'
                       }`}>
-                        {section.content}
+                        {section.content.split(section.highlight).map((part, i) => (
+                          <span key={i}>
+                            {part}
+                            {i === 0 && (
+                              <span className="bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent font-semibold">
+                                {section.highlight}
+                              </span>
+                            )}
+                          </span>
+                        ))}
                       </p>
                     </div>
                   </div>
@@ -236,136 +391,266 @@ const NelovelAboutPage = () => {
               ))}
             </div>
 
-            {/* Right Column - Visual Block */}
+            {/* Right Column - Enhanced Visual with Timeline */}
             <div className="lg:sticky lg:top-8">
-              <div className={`bg-gradient-to-br from-green-500 to-green-600 rounded-3xl aspect-[4/3] flex items-center justify-center shadow-2xl hover:shadow-3xl transition-all duration-500 group relative overflow-hidden transform hover:scale-105 hover:-rotate-1 ${
+              <div className={`transition-all duration-1000 delay-600 ${
                 isVisible['about-section'] ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
-              }`}
-              style={{ transitionDelay: '600ms' }}>
-                {/* Animated Background Pattern */}
-                <div className="absolute inset-0 opacity-10">
-                  <div className="absolute top-4 left-4 w-8 h-8 border-2 border-white rounded-lg animate-pulse"></div>
-                  <div className="absolute top-8 right-8 w-6 h-6 border-2 border-white rounded-full animate-ping delay-1000"></div>
-                  <div className="absolute bottom-8 left-8 w-4 h-4 bg-white rounded-full animate-bounce delay-500"></div>
-                  <div className="absolute bottom-4 right-4 w-12 h-12 border border-white rounded-2xl animate-pulse delay-700"></div>
-                </div>
-                
-                {/* Main Content */}
-                <div className="text-center text-white p-8 relative z-10">
-                  <div className="w-24 h-24 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 backdrop-blur-sm">
-                    <Leaf className="w-12 h-12 group-hover:animate-pulse" />
+              }`}>
+                {/* Main Visual */}
+                <div className="bg-gradient-to-br from-green-500 via-emerald-500 to-green-600 rounded-3xl p-8 shadow-2xl hover:shadow-3xl transition-all duration-500 group relative overflow-hidden transform hover:scale-105 mb-8">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+                  
+                  <div className="relative z-10 text-center text-white">
+                    <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 backdrop-blur-sm">
+                      <Heart className="w-10 h-10" />
+                    </div>
+                    <h4 className="text-2xl font-bold mb-4">Our Mission</h4>
+                    <p className="text-white/90 leading-relaxed">
+                      Making fresh, healthy food accessible to everyone through innovative smart gardening technology
+                    </p>
                   </div>
-                  <h4 className="text-2xl font-bold mb-2 group-hover:scale-105 transition-transform duration-300">Our Garden</h4>
-                  <p className="text-white/80 text-sm transition-all duration-300 group-hover:text-white">
-                    Where innovation meets nature
-                  </p>
+                  
+                  {/* Floating elements */}
+                  <div className="absolute top-4 right-4 w-3 h-3 bg-white/30 rounded-full animate-ping"></div>
+                  <div className="absolute bottom-4 left-4 w-2 h-2 bg-white/40 rounded-full animate-ping delay-1000"></div>
                 </div>
-                
-                {/* Floating Decorative Elements */}
-                <div className="absolute top-4 right-4 w-3 h-3 bg-white/30 rounded-full animate-ping"></div>
-                <div className="absolute top-8 right-8 w-2 h-2 bg-white/20 rounded-full animate-ping delay-500"></div>
-                <div className="absolute bottom-4 left-4 w-4 h-4 bg-white/25 rounded-full animate-ping delay-1000"></div>
+
+                {/* Timeline */}
+                <div className="bg-white rounded-2xl p-6 shadow-lg">
+                  <h4 className="text-xl font-bold text-gray-800 mb-6 text-center">Our Journey</h4>
+                  <div className="space-y-4">
+                    {timeline.map((item, index) => (
+                      <div key={index} className="flex items-start space-x-4 group">
+                        <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-sm group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                          {item.year}
+                        </div>
+                        <div className="flex-1">
+                          <h5 className="font-semibold text-gray-800 group-hover:text-green-600 transition-colors duration-300">{item.title}</h5>
+                          <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Values Section */}
+      {/* Enhanced Values Section */}
       <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6" data-animate id="values-section">
-          <h3 className={`text-4xl font-light text-center mb-16 transition-all duration-1000 ${
-            isVisible['values-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}>Our Core Values</h3>
+        <div className="max-w-7xl mx-auto px-6" data-animate id="values-section">
+          <div className="text-center mb-16">
+            <h3 className={`text-4xl md:text-5xl font-bold text-gray-800 mb-4 transition-all duration-1000 ${
+              isVisible['values-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+            }`}>Our Core Values</h3>
+            <p className={`text-xl text-gray-600 max-w-3xl mx-auto transition-all duration-1000 delay-300 ${
+              isVisible['values-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+            }`}>
+              The principles that guide everything we do at Nelover
+            </p>
+          </div>
           
           <div className="grid md:grid-cols-3 gap-8">
             {values.map((value, index) => (
               <div 
                 key={index} 
-                className={`text-center p-8 rounded-2xl hover:bg-gray-50 transition-all duration-500 transform hover:scale-105 hover:-rotate-1 group ${
+                className={`group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 overflow-hidden ${
                   isVisible['values-section'] ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
                 }`}
                 style={{ transitionDelay: `${index * 200 + 300}ms` }}
+                onMouseEnter={() => setActiveValue(index)}
               >
-                <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-green-200 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
-                  <value.icon className="w-8 h-8 text-green-600 group-hover:animate-pulse" />
+                {/* Background gradient overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${value.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
+                
+                <div className="relative z-10">
+                  <div className={`w-16 h-16 bg-gradient-to-r ${value.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 shadow-lg`}>
+                    <value.icon className="w-8 h-8 text-white" />
+                  </div>
+                  
+                  <h4 className="text-2xl font-bold mb-4 text-gray-900 group-hover:text-gray-800 transition-colors duration-300">
+                    {value.title}
+                  </h4>
+                  
+                  <p className="text-gray-600 leading-relaxed mb-6 group-hover:text-gray-700 transition-colors duration-300">
+                    {value.description}
+                  </p>
+
+                  {/* Feature list */}
+                  <div className="space-y-2">
+                    {value.features.map((feature, idx) => (
+                      <div key={idx} className="flex items-center space-x-2">
+                        <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                        <span className="text-sm text-gray-600">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <h4 className="text-xl font-semibold mb-4 text-gray-900 group-hover:text-green-600 transition-colors duration-300">{value.title}</h4>
-                <p className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">{value.description}</p>
+
+                {/* Hover indicator */}
+                <div className={`absolute bottom-0 left-0 h-1 bg-gradient-to-r ${value.color} transition-all duration-300 ${
+                  activeValue === index ? 'w-full' : 'w-0 group-hover:w-full'
+                }`}></div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-6" data-animate id="team-section">
-          <h3 className={`text-4xl font-light text-center mb-16 transition-all duration-1000 ${
-            isVisible['team-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}>Meet Our Team</h3>
+      {/* Enhanced Team Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-green-50">
+        <div className="max-w-7xl mx-auto px-6" data-animate id="team-section">
+          <div className="text-center mb-16">
+            <h3 className={`text-4xl md:text-5xl font-bold text-gray-800 mb-4 transition-all duration-1000 ${
+              isVisible['team-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+            }`}>Meet Our Team</h3>
+            <p className={`text-xl text-gray-600 max-w-3xl mx-auto transition-all duration-1000 delay-300 ${
+              isVisible['team-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+            }`}>
+              The passionate individuals behind Nelover's innovation
+            </p>
+          </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((member, index) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {teamMembers.map((member, index) => (
               <div 
-                key={member} 
-                className={`bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-500 transform hover:scale-105 hover:-rotate-2 group ${
+                key={index} 
+                className={`group bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 overflow-hidden ${
                   isVisible['team-section'] ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
                 }`}
-                style={{ transitionDelay: `${index * 150 + 300}ms` }}
+                style={{ transitionDelay: `${index * 100 + 300}ms` }}
               >
-                <div className="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center group-hover:bg-green-200 group-hover:scale-110 transition-all duration-300">
-                  <Users className="w-8 h-8 text-green-600 group-hover:animate-pulse" />
+                {/* Profile Image */}
+                <div className="relative mb-6">
+                  <div className="w-24 h-24 mx-auto rounded-full overflow-hidden ring-4 ring-green-100 group-hover:ring-green-200 transition-all duration-300">
+                    <div 
+                      className="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500"
+                      style={{ backgroundImage: `url(${member.image})` }}
+                    />
+                  </div>
+                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Heart className="w-3 h-3 text-white" />
+                  </div>
                 </div>
-                <h4 className="text-lg font-semibold text-center mb-2 group-hover:text-green-600 transition-colors duration-300">Team Member {member}</h4>
-                <p className="text-green-600 text-center mb-3 font-medium">Position Title</p>
-                <p className="text-gray-600 text-sm text-center leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
-                  Passionate about sustainable technology and making fresh food accessible to everyone.
-                </p>
+
+                <div className="text-center">
+                  <h4 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-green-600 transition-colors duration-300">
+                    {member.name}
+                  </h4>
+                  <p className="text-green-600 font-semibold mb-4">{member.role}</p>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    Passionate about sustainable technology and making fresh food accessible to everyone.
+                  </p>
+                </div>
+
+                {/* Social links placeholder */}
+                <div className="flex justify-center space-x-3 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {['L', 'T', 'E'].map((social, idx) => (
+                    <div key={idx} className="w-8 h-8 bg-gray-100 hover:bg-green-500 hover:text-white rounded-lg flex items-center justify-center text-sm font-bold transition-colors duration-300 cursor-pointer">
+                      {social}
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
+          </div>
+
+          {/* Join Team CTA */}
+          <div className={`text-center mt-16 transition-all duration-1000 delay-800 ${
+            isVisible['team-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+          }`}>
+            <div className="bg-white rounded-2xl p-8 shadow-lg max-w-2xl mx-auto">
+              <h4 className="text-2xl font-bold text-gray-800 mb-4">Join Our Growing Team</h4>
+              <p className="text-gray-600 mb-6">
+                We're always looking for passionate individuals who share our vision of making fresh food accessible to everyone.
+              </p>
+              <button className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-3 rounded-full font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105">
+                View Open Positions
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-green-600 to-green-700 relative overflow-hidden">
+      {/* Enhanced CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-green-600 to-emerald-700 relative overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute inset-0">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white/5 rounded-full animate-pulse"></div>
           <div className="absolute bottom-10 right-10 w-24 h-24 bg-white/10 rounded-full animate-pulse delay-1000"></div>
           <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-white/5 rounded-full animate-bounce delay-500"></div>
+          <div className="absolute top-20 right-1/4 w-20 h-20 bg-white/3 rounded-full animate-pulse delay-700"></div>
         </div>
         
-        <div className="max-w-4xl mx-auto px-6 text-center relative z-10" data-animate id="cta-section">
-          <h3 className={`text-4xl font-light text-white mb-6 transition-all duration-1000 ${
+        <div className="max-w-6xl mx-auto px-6 text-center relative z-10" data-animate id="cta-section">
+          <div className={`transition-all duration-1000 ${
             isVisible['cta-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>
-            Ready to start your growing journey?
-          </h3>
-          <p className={`text-xl text-green-100 mb-8 max-w-2xl mx-auto transition-all duration-1000 delay-300 ${
-            isVisible['cta-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}>
-            Join thousands of home gardeners who are already growing fresh, healthy food with Nelover.
-          </p>
-          <div className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-1000 delay-500 ${
-            isVisible['cta-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}>
-            <button className="bg-white text-green-600 px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition-all duration-300 flex items-center justify-center group transform hover:scale-105">
-              Explore Our Products
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button className="border border-white text-white px-8 py-3 rounded-full font-medium hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
-              Contact Our Team
-            </button>
+            <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Ready to Start Your
+              <span className="block bg-gradient-to-r from-green-200 to-emerald-200 bg-clip-text text-transparent">
+                Growing Journey?
+              </span>
+            </h3>
+            
+            <p className="text-xl text-green-100 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Join thousands of home gardeners who are already growing fresh, healthy food with Nelover's smart gardens.
+            </p>
+
+            {/* Feature highlights */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto">
+              {[
+                { icon: Droplets, text: '90% less water' },
+                { icon: Clock, text: 'Year-round growing' },
+                { icon: Zap, text: 'AI optimization' },
+                { icon: Shield, text: '30-day guarantee' }
+              ].map((feature, index) => (
+                <div key={index} className="text-center group">
+                  <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-white/20 transition-colors duration-300">
+                    <feature.icon className="w-6 h-6 text-green-200 group-hover:text-white transition-colors duration-300" />
+                  </div>
+                  <p className="text-sm text-green-100 group-hover:text-white transition-colors duration-300">
+                    {feature.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <button className="group bg-white text-green-600 px-10 py-4 rounded-full font-bold text-lg hover:bg-green-50 transition-all duration-300 transform hover:scale-105 shadow-xl flex items-center justify-center">
+                Explore Our Products
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </button>
+              <button className="group border-2 border-white text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-green-600 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                Contact Our Team
+                <Users className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform" />
+              </button>
+            </div>
+
+            {/* Trust indicators */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mt-12 text-green-200">
+              <div className="flex items-center space-x-2">
+                <div className="flex">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-current text-yellow-400" />
+                  ))}
+                </div>
+                <span className="text-sm">4.9/5 from 2,400+ reviews</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Truck className="w-4 h-4" />
+                <span className="text-sm">Free worldwide shipping</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <Footer/>
+      <Footer />
     </div>
   );
 };
 
-export default NelovelAboutPage;
+export default NelovelAboutPageOptimized;

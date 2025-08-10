@@ -5,7 +5,7 @@ import NelovelCustomHomePage from './App.jsx'
 import Products from './pages/products.jsx'  // Adjust path if needed
 import ContactPage from './pages/Contact.jsx'    // Adjust path if needed
 import NelovelAboutPage from './pages/about.jsx'    
-// import Product from './Product.jsx'    // Adjust path if needed
+import ProductsPageOptimized from './pages/ProductsPageOptimized.jsx'  
 import './index.css'
 
 //...
@@ -36,9 +36,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<NelovelCustomHomePage />} />
         <Route path="/products" element={<Products />} />
-        {/* <Route path="/product/:id" element={<Product />} /> */}
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<NelovelAboutPage />} />
+        <Route path="/productsOptimized" element={<ProductsPageOptimized />} />
       </Routes>
     </Router>
   </React.StrictMode>,
