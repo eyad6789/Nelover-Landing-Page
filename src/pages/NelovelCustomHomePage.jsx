@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import AnnouncementCards from '../components/AnnouncementCards '
 
 
 
@@ -68,37 +69,14 @@ const HeroSection = () => {
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6">
-              <span className="block">Growing</span>
-              <span className="block bg-gradient-to-r from-green-300 via-emerald-300 to-green-400 bg-clip-text text-transparent">
-                Smarter
-              </span>
-              <span className="block">Gardens</span>
+              <span>Growing </span><span className="bg-gradient-to-r from-green-300 via-emerald-300 to-green-400 bg-clip-text text-transparent">
+                Smarter</span><span className='block'>Gardens</span>
             </h1>
             <p className="text-xl md:text-2xl text-green-100 max-w-3xl mx-auto leading-relaxed">
               Revolutionary indoor gardening technology that grows fresh food year-round. 
               No soil, no mess, no experience needed.
             </p>
           </div>
-
-          {/* Feature Highlights */}
-          <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto transition-all duration-1000 delay-500 ${
-            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}>
-            {[
-              { icon: Droplets, text: "90% Less Water", color: "from-blue-400 to-cyan-400" },
-              { icon: Sun, text: "Year-Round Growth", color: "from-yellow-400 to-orange-400" },
-              { icon: Wifi, text: "Smart Monitoring", color: "from-purple-400 to-pink-400" },
-              { icon: Zap, text: "AI Optimized", color: "from-green-400 to-emerald-400" }
-            ].map((feature, index) => (
-              <div key={index} className="group">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform duration-300`}>
-                  <feature.icon className="w-6 h-6 text-white" />
-                </div>
-                <p className="text-sm text-green-200 group-hover:text-white transition-colors duration-300">{feature.text}</p>
-              </div>
-            ))}
-          </div>
-
           {/* CTA Buttons */}
           <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center transition-all duration-1000 delay-700 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
@@ -128,133 +106,13 @@ const HeroSection = () => {
 
 // Redesigned Products Section
 const ProductsSection = () => {
-  const [activeProduct, setActiveProduct] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      });
-    }, { threshold: 0.1 });
-
-    const section = document.getElementById('products-section');
-    if (section) observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
-  const products = [
-    {
-      id: 1,
-      name: "Garden Compact",
-      price: "$299",
-      description: "Perfect for herbs and small vegetables. Ideal for beginners.",
-      features: ["6 plant pods", "LED grow lights", "Smart water system", "Mobile app"],
-      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&h=600&fit=crop",
-      badge: "BESTSELLER",
-      badgeColor: "bg-green-500"
-    },
-    {
-      id: 2,
-      name: "Garden Plus",
-      price: "$599",
-      description: "Advanced features for serious gardeners. Larger capacity.",
-      features: ["12 plant pods", "Full spectrum LEDs", "Automated nutrients", "Growth analytics"],
-      image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=600&fit=crop",
-      badge: "POPULAR",
-      badgeColor: "bg-blue-500"
-    },
-    {
-      id: 3,
-      name: "Garden Pro",
-      price: "$999",
-      description: "Professional-grade with AI optimization and premium materials.",
-      features: ["24 plant pods", "AI grow optimization", "Premium materials", "Professional support"],
-      image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&h=600&fit=crop",
-      badge: "PREMIUM",
-      badgeColor: "bg-purple-500"
-    }
-  ];
 
   return (
     <section id="products-section" className="py-20 bg-gradient-to-b from-white to-green-50">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header */}
-        <div className={`text-center mb-16 transition-all duration-1000 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
-          <h2 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
-            Choose Your <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Garden</span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            From compact countertop gardens to professional growing systems, find the perfect fit for your space and needs.
-          </p>
-        </div>
-
         {/* Product Cards Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
-          {products.map((product, index) => (
-            <div
-              key={product.id}
-              className={`group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-              style={{ transitionDelay: `${index * 200}ms` }}
-              onMouseEnter={() => setActiveProduct(index)}
-            >
-              {/* Badge */}
-              <div className={`absolute top-4 left-4 ${product.badgeColor} text-white px-3 py-1 rounded-full text-xs font-bold z-10`}>
-                {product.badge}
-              </div>
-
-              {/* Product Image */}
-              <div className="relative h-64 overflow-hidden">
-                <div 
-                  className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                  style={{ backgroundImage: `url(${product.image})` }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-2xl font-bold text-gray-800 group-hover:text-green-600 transition-colors duration-300">
-                    {product.name}
-                  </h3>
-                  <span className="text-3xl font-bold text-green-600">{product.price}</span>
-                </div>
-                
-                <p className="text-gray-600 mb-6 leading-relaxed">{product.description}</p>
-                
-                {/* Features */}
-                <div className="space-y-2 mb-6">
-                  {product.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center space-x-2">
-                      <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-700">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* CTA Button */}
-                <button className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-xl font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 group-hover:shadow-lg">
-                  Choose This Garden
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Bottom CTA */}
-        <div className={`text-center mt-16 transition-all duration-1000 delay-600 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
-          <p className="text-gray-600 mb-6">Need help choosing the right garden for you?</p>
-          <button className="bg-white border-2 border-green-500 text-green-600 px-8 py-3 rounded-full font-semibold hover:bg-green-500 hover:text-white transition-all duration-300 transform hover:scale-105">
-            Get Expert Recommendation
-          </button>
-        </div>
+        <AnnouncementCards/>
       </div>
     </section>
   );
@@ -353,7 +211,7 @@ const AboutSection = () => {
                   className={`w-full text-left p-6 rounded-2xl transition-all duration-300 group ${
                     activeTab === tab.id 
                       ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg' 
-                      : 'bg-gray-50 hover:bg-gray-100 text-gray-700'
+                      : 'bg-gray-50 hover:bg-gray-100/10 text-gray-700'
                   }`}
                 >
                   <div className="flex items-center space-x-4">
@@ -434,7 +292,7 @@ const CTASection = () => {
   ];
 
   return (
-    <section id="cta-section" className="relative py-20 bg-gradient-to-br from-green-600 via-green-700 to-emerald-800 overflow-hidden">
+    <section id="cta-section" className="relative py-20 bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0">
         {/* <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=  viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="4"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" /> */}
@@ -488,26 +346,6 @@ const CTASection = () => {
               <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
               <span>Watch Demo</span>
             </button>
-          </div>
-
-          {/* Trust Indicators */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-green-200 text-sm">
-            <div className="flex items-center space-x-2">
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-current text-yellow-400" />
-                ))}
-              </div>
-              <span>4.9/5 from 2,400+ reviews</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Shield className="w-4 h-4" />
-              <span>30-day money back guarantee</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Truck className="w-4 h-4" />
-              <span>Free worldwide shipping</span>
-            </div>
           </div>
         </div>
       </div>

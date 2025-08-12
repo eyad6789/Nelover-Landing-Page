@@ -1,11 +1,203 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Leaf, Award, Users, Globe, ArrowRight, Star,
-  Shield, Truck, Heart,
-  ShoppingCart, Eye, Search, Grid, List
+  Shield, Truck, Heart, ShoppingCart, Eye, Search, 
+  Grid, List, Filter, ChevronDown
 } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+
+// AnnouncementCards Component (This would be in components/AnnouncementCards.js)
+const AnnouncementCards = ({ products, onProductClick }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState(null);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const getSizeClasses = (size) => {
+    switch (size) {
+      case 'large':
+        return 'col-span-1 sm:col-span-2 lg:col-span-2 xl:col-span-2 row-span-1 sm:row-span-2 h-48 sm:h-64 md:h-80';
+      case 'medium':
+        return 'col-span-1 sm:col-span-2 lg:col-span-2 xl:col-span-2 row-span-1 h-32 sm:h-36 md:h-40';
+      case 'small':
+        return 'col-span-1 row-span-1 h-32 sm:h-36 md:h-40';
+      case 'small-bottom':
+        return 'col-span-1 row-span-1 h-28 sm:h-32 md:h-36';
+      default:
+        return 'col-span-1 row-span-1 h-32 sm:h-36 md:h-40';
+    }
+  };
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6 auto-rows-min">
+      {products.map((product, index) => (
+        <div
+          key={product.id}
+          className={`
+            ${getSizeClasses(product.size)}
+            group relative bg-white rounded-2xl shadow-sm hover:shadow-xl 
+            transition-all duration-500 overflow-hidden cursor-pointer
+            transform hover:-translate-y-2 hover:scale-[1.02]
+            ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+          `}
+          style={{ 
+            transitionDelay: `${index * 100}ms`,
+            border: '1px solid rgba(34, 197, 94, 0.1)'
+          }}
+          onMouseEnter={() => setHoveredCard(index)}
+          onMouseLeave={() => setHoveredCard(null)}
+          onClick={() => onProductClick(product.id)}
+        >
+          {/* Badge */}
+          <div className={`absolute top-4 left-4 ${product.badgeColor} text-white px-3 py-1.5 rounded-full text-xs font-semibold z-10 backdrop-blur-sm shadow-lg`}>
+            {product.badge}
+          </div>
+
+          {/* Wishlist & Quick Actions */}
+          <div className="absolute top-4 right-4 flex flex-col space-y-2 z-10">
+            <button className="w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:scale-110">
+              <Heart className="w-4 h-4 text-gray-600 hover:text-red-500" />
+            </button>
+            <button className="w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white hover:scale-110">
+              <Eye className="w-4 h-4 text-gray-600 hover:text-green-500" />
+            </button>
+          </div>
+
+          {/* Product Image */}
+          {product.hasImage && product.image && (
+            <div className="relative h-2/3 sm:h-3/5 overflow-hidden bg-gradient-to-br from-green-50 to-emerald-50">
+              <div
+                className="w-full h-full bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"
+                style={{ backgroundImage: `url(${product.image})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+              
+              {/* Floating elements for premium feel */}
+              <div className="absolute top-6 right-6 w-4 h-4 bg-white/30 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-6 left-6 w-3 h-3 bg-green-400/40 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            </div>
+          )}
+
+          {/* Content Section */}
+          <div 
+            className={`
+              ${product.hasImage && product.image ? 'h-1/3 sm:h-2/5' : 'h-full'} 
+              bg-gradient-to-br from-green-500 to-emerald-600 p-3 sm:p-4 md:p-6 flex flex-col justify-between
+              relative overflow-hidden
+            `}
+          >
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute -top-2 sm:-top-4 -right-2 sm:-right-4 w-12 sm:w-16 md:w-20 h-12 sm:h-16 md:h-20 bg-white/20 rounded-full" />
+              <div className="absolute -bottom-2 sm:-bottom-4 -left-2 sm:-left-4 w-10 sm:w-12 md:w-16 h-10 sm:h-12 md:h-16 bg-white/10 rounded-full" />
+            </div>
+
+            {/* Content */}
+            <div className="relative z-10 flex-grow">
+              <h3 className={`
+                text-white font-bold leading-tight mb-2
+                ${product.size === 'large' ? 'text-lg sm:text-xl md:text-2xl lg:text-3xl' : 
+                  product.size === 'medium' ? 'text-base sm:text-lg md:text-xl' : 
+                  product.size.includes('small-bottom') ? 'text-sm sm:text-base md:text-lg' : 'text-base sm:text-lg md:text-xl'}
+              `}>
+                {product.name}
+              </h3>
+
+              {product.tagline && (
+                <p className={`
+                  text-white/90 font-light leading-relaxed mb-3
+                  ${product.size === 'large' ? 'text-sm sm:text-base' : 
+                    product.size.includes('small-bottom') ? 'text-xs sm:text-sm' : 'text-xs sm:text-sm'}
+                `}>
+                  {product.tagline}
+                </p>
+              )}
+
+              {/* Rating */}
+              {product.rating && (
+                <div className="flex items-center space-x-1 mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className={`w-3 h-3 ${i < Math.floor(product.rating) ? 'text-yellow-300 fill-current' : 'text-white/30'}`} />
+                  ))}
+                  <span className="text-white/70 text-xs ml-1">({product.reviews})</span>
+                </div>
+              )}
+
+              {/* Features for larger cards */}
+              {(product.size === 'large' || product.size === 'medium') && product.features && (
+                <div className="space-y-1 mb-4 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                  {product.features.slice(0, 2).map((feature, idx) => (
+                    <div 
+                      key={idx} 
+                      className="flex items-center space-x-2"
+                      style={{ transitionDelay: `${idx * 100}ms` }}
+                    >
+                      <div className="w-3 h-3 bg-white/30 rounded-full flex items-center justify-center flex-shrink-0">
+                        <div className="w-1.5 h-1.5 bg-white rounded-full" />
+                      </div>
+                      <span className="text-white/80 text-xs font-light">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Price and Actions */}
+            <div className="relative z-10 flex items-center justify-between">
+              <div>
+                <span className={`
+                  text-white font-bold
+                  ${product.size === 'large' ? 'text-xl sm:text-2xl' : 
+                    product.size.includes('small-bottom') ? 'text-lg sm:text-xl' : 'text-lg sm:text-xl'}
+                `}>
+                  ${typeof product.price === 'number' ? product.price : product.price}
+                </span>
+                {product.originalPrice && (
+                  <span className="text-white/50 text-sm line-through ml-2">
+                    ${product.originalPrice}
+                  </span>
+                )}
+                {product.shipping && (
+                  <p className="text-white/60 text-xs mt-1">
+                    {product.shipping}
+                  </p>
+                )}
+              </div>
+
+              {/* Action buttons */}
+              <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                <div className="flex space-x-1">
+                  <button 
+                    className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-white/30 transition-all duration-200"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // Add to cart logic
+                    }}
+                  >
+                    <ShoppingCart className="w-4 h-4 text-white" />
+                  </button>
+                  <button className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-white/30 transition-all duration-200">
+                    <ArrowRight className="w-4 h-4 text-white" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Hover Effect Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </div>
+
+          {/* Subtle Border Glow */}
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-green-400/20 via-emerald-400/20 to-green-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-sm" />
+          
+          {/* Premium shine effect */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+        </div>
+      ))}
+    </div>
+  );
+};
 
 // Main Products Page Component
 const ProductsPageOptimized = () => {
@@ -14,7 +206,9 @@ const ProductsPageOptimized = () => {
   const [isVisible, setIsVisible] = useState({});
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [sortBy, setSortBy] = useState('featured');
+  const [showFilters, setShowFilters] = useState(false);
+  const [selectedPriceRange, setSelectedPriceRange] = useState('all');
 
   // Intersection Observer for scroll animations
   useEffect(() => {
@@ -61,9 +255,24 @@ const ProductsPageOptimized = () => {
     { id: 'pods', name: 'Plant Pods', count: 3 }
   ];
 
-  // Complete Product Catalog
+  const priceRanges = [
+    { id: 'all', name: 'All Prices' },
+    { id: '0-100', name: 'Under $100' },
+    { id: '100-300', name: '$100 - $300' },
+    { id: '300-600', name: '$300 - $600' },
+    { id: '600+', name: '$600+' }
+  ];
+
+  const sortOptions = [
+    { id: 'featured', name: 'Featured' },
+    { id: 'price-low', name: 'Price: Low to High' },
+    { id: 'price-high', name: 'Price: High to Low' },
+    { id: 'rating', name: 'Highest Rated' },
+    { id: 'newest', name: 'Newest' }
+  ];
+
+  // Complete Product Catalog with masonry sizes
   const products = [
-    // Smart Gardens
     {
       id: 1,
       name: 'Nelover Garden Compact',
@@ -75,17 +284,12 @@ const ProductsPageOptimized = () => {
       image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&h=600&fit=crop',
       badge: 'BESTSELLER',
       badgeColor: 'bg-green-500',
-      description: 'Perfect starter kit for fresh herbs and small vegetables. Ideal for beginners.',
+      tagline: 'Perfect starter kit for fresh herbs and small vegetables.',
       features: ['6 plant pods', 'LED grow lights', 'Smart water system', 'Mobile app control'],
-      specifications: {
-        dimensions: '45 x 25 x 38 cm',
-        weight: '3.2 kg',
-        power: '35W',
-        capacity: '6 plants'
-      },
-      inStock: true,
+      size: 'large',
+      hasImage: true,
       shipping: 'Free shipping',
-      warranty: '2 years'
+      inStock: true
     },
     {
       id: 2,
@@ -98,17 +302,12 @@ const ProductsPageOptimized = () => {
       image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=600&fit=crop',
       badge: 'POPULAR',
       badgeColor: 'bg-blue-500',
-      description: 'Advanced features for serious gardeners. Larger capacity with premium materials.',
+      tagline: 'Advanced features for serious gardeners with premium materials.',
       features: ['12 plant pods', 'Full spectrum LEDs', 'Automated nutrients', 'Growth analytics'],
-      specifications: {
-        dimensions: '60 x 35 x 45 cm',
-        weight: '5.8 kg',
-        power: '65W',
-        capacity: '12 plants'
-      },
-      inStock: true,
+      size: 'medium',
+      hasImage: false,
       shipping: 'Free shipping',
-      warranty: '3 years'
+      inStock: true
     },
     {
       id: 3,
@@ -118,22 +317,15 @@ const ProductsPageOptimized = () => {
       originalPrice: 1299,
       rating: 4.9,
       reviews: 234,
-      image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&h=600&fit=crop',
       badge: 'PREMIUM',
       badgeColor: 'bg-purple-500',
-      description: 'Professional-grade with AI optimization and premium materials for commercial use.',
+      tagline: 'Professional-grade with AI optimization for commercial use.',
       features: ['24 plant pods', 'AI grow optimization', 'Premium materials', 'Professional support'],
-      specifications: {
-        dimensions: '80 x 50 x 60 cm',
-        weight: '12.5 kg',
-        power: '120W',
-        capacity: '24 plants'
-      },
-      inStock: true,
+      size: 'small',
+      hasImage: false,
       shipping: 'Free shipping',
-      warranty: '5 years'
+      inStock: true
     },
-    // Accessories
     {
       id: 4,
       name: 'Smart Sensor Kit',
@@ -142,20 +334,14 @@ const ProductsPageOptimized = () => {
       originalPrice: 249,
       rating: 4.7,
       reviews: 312,
-      image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&h=600&fit=crop',
       badge: 'NEW',
       badgeColor: 'bg-orange-500',
-      description: 'Advanced sensors for monitoring pH, nutrients, and environmental conditions.',
+      tagline: 'Advanced sensors for monitoring pH and nutrients.',
       features: ['pH monitoring', 'Nutrient tracking', 'Temperature control', 'Humidity sensing'],
-      specifications: {
-        connectivity: 'WiFi + Bluetooth',
-        battery: '6 months',
-        range: '10 meters',
-        compatibility: 'All Nelover gardens'
-      },
-      inStock: true,
-      shipping: 'Free shipping',
-      warranty: '1 year'
+      size: 'small',
+      hasImage: false,
+      shipping: 'Standard shipping',
+      inStock: true
     },
     {
       id: 5,
@@ -165,20 +351,14 @@ const ProductsPageOptimized = () => {
       originalPrice: 199,
       rating: 4.6,
       reviews: 456,
-      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=600&fit=crop',
       badge: 'SALE',
       badgeColor: 'bg-red-500',
-      description: 'Full spectrum LED panel for optimal plant growth in any environment.',
+      tagline: 'Full spectrum LED panel for optimal plant growth.',
       features: ['Full spectrum light', 'Energy efficient', 'Adjustable intensity', 'Timer function'],
-      specifications: {
-        power: '45W',
-        spectrum: 'Full spectrum',
-        lifespan: '50,000 hours',
-        coverage: '60 x 60 cm'
-      },
-      inStock: true,
-      shipping: 'Free shipping',
-      warranty: '3 years'
+      size: 'small-bottom',
+      hasImage: false,
+      shipping: 'Standard shipping',
+      inStock: true
     },
     {
       id: 6,
@@ -188,85 +368,15 @@ const ProductsPageOptimized = () => {
       originalPrice: 99,
       rating: 4.8,
       reviews: 789,
-      image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=400&fit=crop',
       badge: 'ORGANIC',
       badgeColor: 'bg-green-600',
-      description: 'Organic nutrient formulas for optimal plant growth and health.',
+      tagline: 'Organic nutrient formulas for optimal plant health.',
       features: ['100% organic', '3-month supply', 'Balanced formula', 'Easy mixing'],
-      specifications: {
-        volume: '3 x 500ml bottles',
-        duration: '3 months',
-        type: 'Organic liquid',
-        plants: 'All vegetables & herbs'
-      },
-      inStock: true,
+      size: 'small-bottom',
+      hasImage: false,
       shipping: 'Standard shipping',
-      warranty: '6 months'
+      inStock: true
     },
-    {
-      id: 7,
-      name: 'Water Circulation Pump',
-      category: 'accessories',
-      price: 89,
-      originalPrice: 119,
-      rating: 4.5,
-      reviews: 178,
-      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop',
-      description: 'High-efficiency pump for optimal water circulation and aeration.',
-      features: ['Silent operation', 'Energy efficient', 'Adjustable flow', 'Easy installation'],
-      specifications: {
-        flow: '800L/hour',
-        power: '15W',
-        noise: '<25dB',
-        warranty: '2 years'
-      },
-      inStock: true,
-      shipping: 'Standard shipping',
-      warranty: '2 years'
-    },
-    {
-      id: 8,
-      name: 'pH Testing Kit',
-      category: 'accessories',
-      price: 39,
-      originalPrice: 49,
-      rating: 4.4,
-      reviews: 234,
-      image: 'https://images.unsplash.com/photo-1583912086296-32d18e3b9ab0?w=600&h=600&fit=crop',
-      description: 'Digital pH meter and testing solutions for precise water management.',
-      features: ['Digital display', 'Auto calibration', 'Storage case', 'Calibration solutions'],
-      specifications: {
-        range: 'pH 0-14',
-        accuracy: '±0.1 pH',
-        calibration: 'Automatic',
-        battery: 'AAA x2'
-      },
-      inStock: true,
-      shipping: 'Standard shipping',
-      warranty: '1 year'
-    },
-    {
-      id: 9,
-      name: 'Smart Garden Stand',
-      category: 'accessories',
-      price: 129,
-      originalPrice: 159,
-      rating: 4.7,
-      reviews: 145,
-      image: 'https://images.unsplash.com/photo-1586985561592-ef86e4b4abe5?w=600&h=600&fit=crop',
-      description: 'Adjustable premium stand with storage for any Nelover garden system.',
-      features: ['Height adjustable', 'Storage shelves', 'Premium materials', 'Easy assembly'],
-      specifications: {
-        material: 'Aluminum alloy',
-        height: '80-120 cm adjustable',
-        weight: '8.5 kg',
-        capacity: '50 kg'
-      },
-      inStock: true,
-      shipping: 'Free shipping',
-      warranty: '5 years'
-    },
-    // Plant Pods
     {
       id: 10,
       name: 'Herb Starter Pack',
@@ -275,78 +385,85 @@ const ProductsPageOptimized = () => {
       originalPrice: 39,
       rating: 4.9,
       reviews: 1234,
-      image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=600&h=600&fit=crop',
       badge: 'BESTSELLER',
       badgeColor: 'bg-green-500',
-      description: 'Complete herb collection with basil, mint, parsley, and cilantro pods.',
+      tagline: 'Complete herb collection with basil, mint, parsley.',
       features: ['6 herb varieties', 'Pre-seeded pods', 'Germination guarantee', 'Growing guide'],
-      specifications: {
-        varieties: '6 different herbs',
-        germination: '5-10 days',
-        harvest: '4-6 weeks',
-        yield: 'Multiple harvests'
-      },
-      inStock: true,
+      size: 'small-bottom',
+      hasImage: false,
       shipping: 'Standard shipping',
-      warranty: 'Germination guarantee'
-    },
-    {
-      id: 11,
-      name: 'Vegetable Garden Pack',
-      category: 'pods',
-      price: 49,
-      originalPrice: 69,
-      rating: 4.8,
-      reviews: 567,
-      image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&h=600&fit=crop',
-      description: 'Fresh vegetables including lettuce, spinach, kale, and cherry tomatoes.',
-      features: ['8 vegetable varieties', 'Seasonal selection', 'High yield', 'Nutrition guide'],
-      specifications: {
-        varieties: '8 vegetables',
-        germination: '7-14 days',
-        harvest: '6-8 weeks',
-        seasons: 'All year'
-      },
-      inStock: true,
-      shipping: 'Standard shipping',
-      warranty: 'Germination guarantee'
-    },
-    {
-      id: 12,
-      name: 'Microgreens Collection',
-      category: 'pods',
-      price: 35,
-      originalPrice: 45,
-      rating: 4.6,
-      reviews: 289,
-      image: 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?w=600&h=600&fit=crop',
-      badge: 'SUPERFOOD',
-      badgeColor: 'bg-purple-500',
-      description: 'Nutrient-dense microgreens collection for health-conscious gardeners.',
-      features: ['12 microgreen varieties', 'High nutrition', 'Fast growing', 'Superfood collection'],
-      specifications: {
-        varieties: '12 microgreens',
-        germination: '3-7 days',
-        harvest: '10-14 days',
-        nutrition: 'High vitamin content'
-      },
-      inStock: true,
-      shipping: 'Standard shipping',
-      warranty: 'Germination guarantee'
+      inStock: true
     }
   ];
 
-  // Filter products based on category and search
-  const filteredProducts = products.filter(product => {
-    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  // Handle product click
+  const handleProductClick = (productId) => {
+    window.location.href = `/products/${productId}`;
+  };
+
+  // Filter and sort products
+  const getFilteredProducts = () => {
+    let filtered = [...products];
+
+    // Filter by search term
+    if (searchQuery) {
+      filtered = filtered.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (product.tagline && product.tagline.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    }
+
+    // Filter by category
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(product => product.category === selectedCategory);
+    }
+
+    // Filter by price range
+    if (selectedPriceRange !== 'all') {
+      const [min, max] = selectedPriceRange.split('-').map(p => p.replace('+', ''));
+      filtered = filtered.filter(product => {
+        const price = typeof product.price === 'number' ? product.price : parseFloat(product.price.replace('$', ''));
+        if (selectedPriceRange === '600+') return price >= 600;
+        return price >= parseInt(min) && price <= parseInt(max);
+      });
+    }
+
+    // Sort products
+    switch (sortBy) {
+      case 'price-low':
+        filtered.sort((a, b) => {
+          const priceA = typeof a.price === 'number' ? a.price : parseFloat(a.price.replace('$', ''));
+          const priceB = typeof b.price === 'number' ? b.price : parseFloat(b.price.replace('$', ''));
+          return priceA - priceB;
+        });
+        break;
+      case 'price-high':
+        filtered.sort((a, b) => {
+          const priceA = typeof a.price === 'number' ? a.price : parseFloat(a.price.replace('$', ''));
+          const priceB = typeof b.price === 'number' ? b.price : parseFloat(b.price.replace('$', ''));
+          return priceB - priceA;
+        });
+        break;
+      case 'rating':
+        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        break;
+      case 'newest':
+        filtered.sort((a, b) => b.id - a.id);
+        break;
+      default:
+        // Featured - keep original order
+        break;
+    }
+
+    return filtered;
+  };
+
+  const filteredProducts = getFilteredProducts();
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar currentPage="products" />
+      {/* Navigation would be here */}
+      {/* <Navbar currentPage="products" /> */}
       
       {/* Hero Section */}
       <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-green-900 via-emerald-800 to-green-900 flex items-center">
@@ -409,7 +526,7 @@ const ProductsPageOptimized = () => {
               isVisible['hero-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}>
               {[
-                { icon: ShoppingCart, text: "12 Products", color: "from-blue-400 to-cyan-400" },
+                { icon: ShoppingCart, text: `${products.length} Products`, color: "from-blue-400 to-cyan-400" },
                 { icon: Star, text: "4.9 Rating", color: "from-yellow-400 to-orange-400" },
                 { icon: Users, text: "50K+ Users", color: "from-green-400 to-emerald-400" },
                 { icon: Globe, text: "15+ Countries", color: "from-purple-400 to-pink-400" }
@@ -427,7 +544,10 @@ const ProductsPageOptimized = () => {
             <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center transition-all duration-1000 delay-700 ${
               isVisible['hero-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}>
-              <button className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center">
+              <button 
+                onClick={() => document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' })}
+                className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center"
+              >
                 <ShoppingCart className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                 Shop All Products
               </button>
@@ -448,233 +568,202 @@ const ProductsPageOptimized = () => {
         `}</style>
       </section>
 
-      {/* Filter & Search Section */}
-      <section className="py-20 bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6" data-animate id="filter-section">
+      {/* Filter & Controls Section */}
+      <section className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6" data-animate id="filter-section">
           <div className={`transition-all duration-1000 ${
             isVisible['filter-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
-            {/* Search Bar */}
-            <div className="flex flex-col lg:flex-row gap-6 items-center justify-between mb-8">
-              <div className="relative flex-1 max-w-md">
+            {/* Top Row - Search & Controls */}
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-6">
+              {/* Search Bar */}
+              <div className="relative max-w-md w-full">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:ring-4 focus:ring-green-100 outline-none transition-all duration-300"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
                 />
               </div>
 
-              {/* View Mode Toggle */}
-              <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded-lg transition-all duration-300 ${
-                    viewMode === 'grid' ? 'bg-green-500 text-white' : 'text-gray-600 hover:text-green-600'
-                  }`}
+              {/* Right Controls */}
+              <div className="flex items-center gap-3">
+                {/* Sort Dropdown */}
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
                 >
-                  <Grid className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-2 rounded-lg transition-all duration-300 ${
-                    viewMode === 'list' ? 'bg-green-500 text-white' : 'text-gray-600 hover:text-green-600'
-                  }`}
-                >
-                  <List className="w-5 h-5" />
-                </button>
+                  {sortOptions.map(option => (
+                    <option key={option.id} value={option.id}>{option.name}</option>
+                  ))}
+                </select>
+
+                {/* View Mode Toggle */}
+                <div className="flex border border-gray-200 rounded-lg overflow-hidden">
+                  <button
+                    onClick={() => setViewMode('grid')}
+                    className={`p-2 ${viewMode === 'grid' ? 'bg-green-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'} transition-colors`}
+                  >
+                    <Grid className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode('list')}
+                    className={`p-2 ${viewMode === 'list' ? 'bg-green-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'} transition-colors`}
+                  >
+                    <List className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Results Count */}
+                <span className="text-gray-600 text-sm whitespace-nowrap">
+                  {filteredProducts.length} products
+                </span>
               </div>
             </div>
 
-            {/* Category Filters */}
-            <div className="flex flex-wrap justify-center gap-4">
-              {categories.map((category) => (
+            {/* Second Row - Category Filters */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              {/* Filter Controls */}
+              <div className="flex flex-wrap items-center gap-3">
                 <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
-                    selectedCategory === category.id
-                      ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg'
-                      : 'bg-gray-100 text-gray-700 hover:bg-green-50 hover:text-green-600'
-                  }`}
+                  onClick={() => setShowFilters(!showFilters)}
+                  className="flex items-center space-x-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
                 >
-                  {category.name}
-                  <span className="ml-2 text-sm opacity-75">({category.count})</span>
+                  <Filter className="w-4 h-4" />
+                  <span>Advanced Filters</span>
+                  <ChevronDown className={`w-4 h-4 transform transition-transform ${showFilters ? 'rotate-180' : ''}`} />
                 </button>
-              ))}
+
+                {/* Category Buttons */}
+                <div className="flex flex-wrap gap-2">
+                  {categories.map((category) => (
+                    <button
+                      key={category.id}
+                      onClick={() => setSelectedCategory(category.id)}
+                      className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm ${
+                        selectedCategory === category.id
+                          ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg'
+                          : 'bg-gray-100 text-gray-700 hover:bg-green-50 hover:text-green-600'
+                      }`}
+                    >
+                      {category.name}
+                      <span className="ml-1 opacity-75">({category.count})</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Price Range Filter */}
+              <select
+                value={selectedPriceRange}
+                onChange={(e) => setSelectedPriceRange(e.target.value)}
+                className="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+              >
+                {priceRanges.map(range => (
+                  <option key={range.id} value={range.id}>{range.name}</option>
+                ))}
+              </select>
             </div>
+
+            {/* Expandable Advanced Filters */}
+            {showFilters && (
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Features</h4>
+                    <div className="space-y-2">
+                      {['Smart Technology', 'LED Grow Lights', 'Mobile App Control', 'Auto Watering', 'pH Monitoring'].map((feature, index) => (
+                        <label key={index} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            className="text-green-500 focus:ring-green-500 rounded"
+                          />
+                          <span className="ml-2 text-sm text-gray-700">{feature}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Plant Capacity</h4>
+                    <div className="space-y-2">
+                      {['1-6 plants', '6-12 plants', '12-24 plants', '24+ plants'].map((capacity, index) => (
+                        <label key={index} className="flex items-center">
+                          <input
+                            type="radio"
+                            name="capacity"
+                            className="text-green-500 focus:ring-green-500"
+                          />
+                          <span className="ml-2 text-sm text-gray-700">{capacity}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Brand</h4>
+                    <div className="space-y-2">
+                      {['Nelover', 'AeroGarden', 'Click & Grow', 'Tower Garden'].map((brand, index) => (
+                        <label key={index} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            className="text-green-500 focus:ring-green-500 rounded"
+                          />
+                          <span className="ml-2 text-sm text-gray-700">{brand}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Products Grid Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-green-50">
-        <div className="max-w-7xl mx-auto px-6" data-animate id="products-section">
+      {/* Products Section */}
+      <section className="py-12 bg-gray-50" id="products-section">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6" data-animate id="products-grid">
           <div className={`transition-all duration-1000 ${
-            isVisible['products-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            isVisible['products-grid'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
-            {/* Results Header */}
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-800">
-                {filteredProducts.length} Product{filteredProducts.length !== 1 ? 's' : ''} Found
+            {/* Section Header */}
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                {selectedCategory === 'all' ? 'All Products' : categories.find(c => c.id === selectedCategory)?.name}
               </h2>
-              <select className="px-4 py-2 border border-gray-300 rounded-lg focus:border-green-500 outline-none">
-                <option>Sort by: Featured</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Newest First</option>
-                <option>Best Rating</option>
-              </select>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Discover our premium selection of smart gardening solutions designed to bring fresh, healthy produce to your home.
+              </p>
             </div>
 
             {/* Products Grid */}
-            <div className={`grid ${viewMode === 'grid' ? 'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1'} gap-8`}>
-              {filteredProducts.map((product, index) => (
-                <div
-                  key={product.id}
-                  className={`group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:scale-105 hover:-rotate-1 ${
-                    isVisible['products-section'] ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-                  }`}
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                >
-                  {/* Product Image */}
-                  <div className="relative overflow-hidden">
-                    {product.badge && (
-                      <div className={`absolute top-4 left-4 ${product.badgeColor} text-white px-3 py-1 rounded-full text-xs font-bold z-10`}>
-                        {product.badge}
-                      </div>
-                    )}
-                    
-                    <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <button className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors duration-200">
-                        <Heart className="w-5 h-5 text-gray-600 hover:text-red-500 transition-colors" />
-                      </button>
-                    </div>
-
-                    <div 
-                      className="aspect-square bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                      style={{ backgroundImage: `url(${product.image})` }}
-                    />
-                    
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    
-                    {/* Quick Actions */}
-                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
-                      <div className="flex space-x-2">
-                        <button className="bg-white/90 backdrop-blur-sm text-gray-800 px-4 py-2 rounded-full font-semibold hover:bg-white transition-colors duration-200 flex items-center space-x-1">
-                          <Eye className="w-4 h-4" />
-                          <span>Quick View</span>
-                        </button>
-                        <button className="bg-green-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-green-600 transition-colors duration-200 flex items-center space-x-1">
-                          <ShoppingCart className="w-4 h-4" />
-                          <span>Add to Cart</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="p-6">
-                    {/* Rating */}
-                    <div className="flex items-center space-x-2 mb-3">
-                      <div className="flex items-center">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-4 h-4 ${
-                              i < Math.floor(product.rating) ? 'fill-current text-yellow-400' : 'text-gray-300'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-sm text-gray-600">
-                        {product.rating} ({product.reviews} reviews)
-                      </span>
-                    </div>
-
-                    {/* Product Name */}
-                    <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-green-600 transition-colors duration-300">
-                      {product.name}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                      {product.description}
-                    </p>
-
-                    {/* Features */}
-                    <div className="mb-4">
-                      <div className="flex flex-wrap gap-2">
-                        {product.features.slice(0, 2).map((feature, idx) => (
-                          <span key={idx} className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
-                            {feature}
-                          </span>
-                        ))}
-                        {product.features.length > 2 && (
-                          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
-                            +{product.features.length - 2} more
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Price & Stock */}
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold text-green-600">${product.price}</span>
-                        {product.originalPrice && (
-                          <span className="text-lg text-gray-400 line-through">${product.originalPrice}</span>
-                        )}
-                      </div>
-                      <div className={`flex items-center space-x-1 ${
-                        product.inStock ? 'text-green-600' : 'text-red-500'
-                      }`}>
-                        <div className={`w-2 h-2 rounded-full ${
-                          product.inStock ? 'bg-green-500' : 'bg-red-500'
-                        }`} />
-                        <span className="text-sm font-medium">
-                          {product.inStock ? 'In Stock' : 'Out of Stock'}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Shipping & Warranty */}
-                    <div className="text-xs text-gray-500 mb-4 space-y-1">
-                      <div className="flex items-center space-x-1">
-                        <Truck className="w-3 h-3" />
-                        <span>{product.shipping}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Shield className="w-3 h-3" />
-                        <span>{product.warranty} warranty</span>
-                      </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="space-y-2">
-                      <button className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2">
-                        <ShoppingCart className="w-5 h-5" />
-                        <span>Add to Cart</span>
-                      </button>
-                      <button className="w-full border-2 border-gray-300 hover:border-green-500 text-gray-700 hover:text-green-600 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center space-x-2">
-                        <Eye className="w-5 h-5" />
-                        <span>View Details</span>
-                      </button>
-                    </div>
-                  </div>
+            {filteredProducts.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Search className="w-12 h-12 text-gray-400" />
                 </div>
-              ))}
-            </div>
-
-            {/* Load More */}
-            {filteredProducts.length >= 8 && (
-              <div className="text-center mt-12">
-                <button className="bg-white border-2 border-green-500 text-green-600 hover:bg-green-500 hover:text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                  Load More Products
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">No products found</h3>
+                <p className="text-gray-600">Try adjusting your search or filter criteria</p>
+                <button 
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSelectedCategory('all');
+                    setSelectedPriceRange('all');
+                  }}
+                  className="mt-4 text-green-600 hover:text-green-700 font-medium"
+                >
+                  Clear all filters
                 </button>
               </div>
+            ) : (
+              <AnnouncementCards 
+                products={filteredProducts} 
+                onProductClick={handleProductClick}
+              />
             )}
           </div>
         </div>
@@ -697,22 +786,25 @@ const ProductsPageOptimized = () => {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
+                id: 'gardens',
                 name: 'Smart Gardens',
-                description: 'Complete growing systems with AI optimization',
+                description: 'Complete growing systems with AI optimization and premium materials',
                 count: '3 Products',
                 image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&h=400&fit=crop',
                 color: 'from-green-500 to-emerald-500'
               },
               {
+                id: 'accessories',
                 name: 'Accessories',
-                description: 'Sensors, lights, and growing accessories',
+                description: 'Sensors, lights, nutrients, and professional growing accessories',
                 count: '6 Products',
                 image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&h=400&fit=crop',
                 color: 'from-blue-500 to-cyan-500'
               },
               {
+                id: 'pods',
                 name: 'Plant Pods',
-                description: 'Pre-seeded pods for herbs and vegetables',
+                description: 'Pre-seeded pods for herbs, vegetables, and microgreens',
                 count: '3 Products',
                 image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=600&h=400&fit=crop',
                 color: 'from-purple-500 to-pink-500'
@@ -724,6 +816,7 @@ const ProductsPageOptimized = () => {
                   isVisible['categories-section'] ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
                 }`}
                 style={{ transitionDelay: `${index * 200 + 400}ms` }}
+                onClick={() => setSelectedCategory(category.id)}
               >
                 {/* Background Image */}
                 <div 
@@ -755,7 +848,37 @@ const ProductsPageOptimized = () => {
         </div>
       </section>
 
-      <Footer />
+      {/* Newsletter Section */}
+      <section className="bg-green-600">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16" data-animate id="newsletter-section">
+          <div className={`text-center transition-all duration-1000 ${
+            isVisible['newsletter-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Stay Updated with Garden Tips
+            </h2>
+            <p className="text-green-100 mb-8 max-w-2xl mx-auto text-lg">
+              Get expert gardening advice, seasonal tips, and exclusive product offers delivered to your inbox.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-green-600 outline-none"
+              />
+              <button className="bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap">
+                Subscribe Now
+              </button>
+            </div>
+            <p className="text-green-200 text-sm mt-4">
+              Join 25,000+ gardeners who trust our expertise. Unsubscribe anytime.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer would be here */}
+      {/* <Footer /> */}
     </div>
   );
 };
