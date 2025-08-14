@@ -67,32 +67,6 @@ const Footer = () => {
       </div>
 
       <div className="relative z-10">
-        {/* Newsletter Section */}
-        <div className="bg-gradient-to-r from-green-600 to-emerald-600 py-12">
-          <div className="max-w-7xl mx-auto px-6 text-center">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4">Stay Updated</h3>
-            <p className="text-green-100 mb-8 max-w-2xl mx-auto">
-              Get the latest tips on smart gardening, new product releases, and exclusive offers delivered to your inbox.
-            </p>
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-white"
-                required
-              />
-              <button
-                type="submit"
-                className="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
-        </div>
-
         {/* Main Footer Content */}
         <div className="py-16">
           <div className="max-w-7xl mx-auto px-6">
@@ -161,30 +135,9 @@ const Footer = () => {
               ))}
             </div>
 
-            {/* Trust Badges */}
-            <div className="flex flex-wrap justify-center items-center gap-8 py-8 mt-12 border-t border-gray-800">
-              <div className="flex items-center space-x-2 text-white/70">
-                <Shield className="w-5 h-5 text-green-500" />
-                <span className="text-sm">30-Day Money Back Guarantee</span>
-              </div>
-              <div className="flex items-center space-x-2 text-white/70">
-                <Truck className="w-5 h-5 text-green-500" />
-                <span className="text-sm">Free Worldwide Shipping</span>
-              </div>
-              <div className="flex items-center space-x-2 text-white/70">
-                <Award className="w-5 h-5 text-green-500" />
-                <span className="text-sm">2024 Innovation Award Winner</span>
-              </div>
-              <div className="flex items-center space-x-1 text-white/70">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-current text-yellow-400" />
-                ))}
-                <span className="text-sm ml-2">4.9/5 Customer Rating</span>
-              </div>
-            </div>
-
+   
             {/* Bottom Bar */}
-            <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <div className="border-t border-gray-800 pt-8 mt-12 flex flex-col md:flex-row justify-between items-center">
               <p className="text-gray-400 text-sm mb-4 md:mb-0">
                 &copy; {currentYear} Nelover. All rights reserved. Made with ❤️ in Iraq.
               </p>

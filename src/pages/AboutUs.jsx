@@ -6,9 +6,10 @@ import {
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import CTASection from '../components/CTASection';
 
 // Main About Page Component
-const NelovelAboutPageOptimized = () => {
+const AboutUs = () => {
   const [expandedSection, setExpandedSection] = useState('who-we-are');
   const [isVisible, setIsVisible] = useState({});
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -85,7 +86,7 @@ const NelovelAboutPageOptimized = () => {
   ];
 
   const stats = [
-    { number: '50K+', label: 'Happy Gardeners', icon: Users, color: 'from-blue-500 to-cyan-500' },
+    { number: '50K+', label: 'Happy Gardeners', icon: Users, color: 'from-indigo-500 to-cyan-500' },
     { number: '2M+', label: 'Plants Grown', icon: Leaf, color: 'from-green-500 to-emerald-500' },
     { number: '15+', label: 'Countries Served', icon: Globe, color: 'from-purple-500 to-pink-500' },
     { number: '98%', label: 'Success Rate', icon: Award, color: 'from-yellow-500 to-orange-500' }
@@ -110,7 +111,7 @@ const NelovelAboutPageOptimized = () => {
       icon: Users,
       title: 'Community Focused',
       description: 'We build products that bring people together around the joy of growing fresh food.',
-      color: 'from-blue-500 to-cyan-500',
+      color: 'from-indigo-500 to-cyan-500',
       features: ['User community', '24/7 support', 'Growing guides']
     }
   ];
@@ -123,12 +124,12 @@ const NelovelAboutPageOptimized = () => {
   ];
 
   const teamMembers = [
-    { name: 'Sarah Chen', role: 'CEO & Co-founder', image: 'https://images.unsplash.com/photo-1494790108755-2616b612b15c?w=300&h=300&fit=crop&crop=face' },
-    { name: 'Marcus Johnson', role: 'CTO & Co-founder', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face' },
-    { name: 'Elena Rodriguez', role: 'Head of Design', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face' },
-    { name: 'Dr. Ahmed Hassan', role: 'Lead Scientist', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face' },
-    { name: 'Lisa Wang', role: 'Operations Director', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=face' },
-    { name: 'Tom Mitchell', role: 'Head of Engineering', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face' }
+    { name: 'Mohamed Farhod ', role: 'CEO & Co-founder', image: 'https://images.unsplash.com/photo-1494790108755-2616b612b15c?w=300&h=300&fit=crop&crop=face' },
+    { name: 'Ali', role: 'CTO & Co-founder', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face' },
+    { name: 'Eyad Qasim', role: 'Head of Design', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face' },
+    { name: 'Mahidi ', role: 'Lead Scientist', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face' },
+    { name: 'Mohemd Hasan', role: 'Operations Director', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=face' },
+    { name: 'Hamed', role: 'Head of Engineering', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face' }
   ];
 
   const toggleSection = (sectionId) => {
@@ -200,9 +201,15 @@ const NelovelAboutPageOptimized = () => {
                     <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                     Watch Our Story
                   </button>
-                  <button className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105">
+                  <button 
+                    onClick={() => {
+                      const teamSection = document.getElementById('team-section');
+                      teamSection?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105"
+                  >
                     Meet The Team
-                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="inline w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
 
@@ -250,11 +257,11 @@ const NelovelAboutPageOptimized = () => {
           </div>
         </div>
 
-        {/* Video Modal */}
+        {/* Enhanced Video Modal */}
         {videoModalOpen && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl p-6 max-w-4xl w-full">
-              <div className="flex justify-between items-center mb-4">
+            <div className="bg-white rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center mb-6">
                 <h3 className="text-2xl font-bold text-gray-800">Our Story</h3>
                 <button 
                   onClick={() => setVideoModalOpen(false)}
@@ -263,10 +270,74 @@ const NelovelAboutPageOptimized = () => {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <div className="aspect-video bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center">
-                <div className="text-center text-green-800">
-                  <Play className="w-16 h-16 mx-auto mb-4" />
-                  <p className="text-lg font-medium">Video Coming Soon</p>
+              
+              {/* Enhanced Story Content */}
+              <div className="space-y-6">
+                {/* Video Placeholder */}
+                <div className="aspect-video bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center mb-6">
+                  <div className="text-center text-green-800">
+                    <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 cursor-pointer hover:scale-110 transition-transform duration-300">
+                      <Play className="w-10 h-10 text-white ml-1" />
+                    </div>
+                    <p className="text-lg font-medium">Our Journey Video</p>
+                    <p className="text-sm text-green-600 mt-2">Click to play</p>
+                  </div>
+                </div>
+
+                {/* Story Content */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    <h4 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                      <Lightbulb className="w-5 h-5 mr-2 text-green-600" />
+                      The Beginning
+                    </h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      Founded in 2022, Nelover was born from a simple observation: traditional gardening shouldn't be the only way to grow fresh food. Our founders, passionate about sustainability and technology, set out to make fresh food production accessible to everyone.
+                    </p>
+                  </div>
+                  
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    <h4 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                      <Target className="w-5 h-5 mr-2 text-green-600" />
+                      Our Mission Today
+                    </h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      We've helped over 50,000 families grow fresh herbs, vegetables, and greens year-round. Our smart indoor gardens have grown over 2 million plants, reducing environmental impact while improving health and wellbeing.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Quick Stats in Modal */}
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6">
+                  <h4 className="text-xl font-semibold text-gray-800 mb-4 text-center">Our Impact</h4>
+                  <div className="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                      <div className="text-2xl font-bold text-green-600">50,000+</div>
+                      <div className="text-sm text-gray-600">Happy Customers</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-green-600">2M+</div>
+                      <div className="text-sm text-gray-600">Plants Grown</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-green-600">15+</div>
+                      <div className="text-sm text-gray-600">Countries</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Call to Action in Modal */}
+                <div className="text-center pt-4">
+                  <button 
+                    onClick={() => {
+                      setVideoModalOpen(false);
+                      const teamSection = document.getElementById('team-section');
+                      teamSection?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-3 rounded-full font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105"
+                  >
+                    Meet Our Amazing Team
+                  </button>
                 </div>
               </div>
             </div>
@@ -556,101 +627,13 @@ const NelovelAboutPageOptimized = () => {
               </div>
             ))}
           </div>
-
-          {/* Join Team CTA */}
-          <div className={`text-center mt-16 transition-all duration-1000 delay-800 ${
-            isVisible['team-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}>
-            <div className="bg-white rounded-2xl p-8 shadow-lg max-w-2xl mx-auto">
-              <h4 className="text-2xl font-bold text-gray-800 mb-4">Join Our Growing Team</h4>
-              <p className="text-gray-600 mb-6">
-                We're always looking for passionate individuals who share our vision of making fresh food accessible to everyone.
-              </p>
-              <button className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-3 rounded-full font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105">
-                View Open Positions
-              </button>
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* Enhanced CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-green-600 to-emerald-700 relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-white/5 rounded-full animate-pulse"></div>
-          <div className="absolute bottom-10 right-10 w-24 h-24 bg-white/10 rounded-full animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-white/5 rounded-full animate-bounce delay-500"></div>
-          <div className="absolute top-20 right-1/4 w-20 h-20 bg-white/3 rounded-full animate-pulse delay-700"></div>
-        </div>
-        
-        <div className="max-w-6xl mx-auto px-6 text-center relative z-10" data-animate id="cta-section">
-          <div className={`transition-all duration-1000 ${
-            isVisible['cta-section'] ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}>
-            <h3 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Ready to Start Your
-              <span className="block bg-gradient-to-r from-green-200 to-emerald-200 bg-clip-text text-transparent">
-                Growing Journey?
-              </span>
-            </h3>
-            
-            <p className="text-xl text-green-100 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Join thousands of home gardeners who are already growing fresh, healthy food with Nelover's smart gardens.
-            </p>
-
-            {/* Feature highlights */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto">
-              {[
-                { icon: Droplets, text: '90% less water' },
-                { icon: Clock, text: 'Year-round growing' },
-                { icon: Zap, text: 'AI optimization' },
-                { icon: Shield, text: '30-day guarantee' }
-              ].map((feature, index) => (
-                <div key={index} className="text-center group">
-                  <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-white/20 transition-colors duration-300">
-                    <feature.icon className="w-6 h-6 text-green-200 group-hover:text-white transition-colors duration-300" />
-                  </div>
-                  <p className="text-sm text-green-100 group-hover:text-white transition-colors duration-300">
-                    {feature.text}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <button className="group bg-white text-green-600 px-10 py-4 rounded-full font-bold text-lg hover:bg-green-50 transition-all duration-300 transform hover:scale-105 shadow-xl flex items-center justify-center">
-                Explore Our Products
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="group border-2 border-white text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-green-600 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
-                Contact Our Team
-                <Users className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform" />
-              </button>
-            </div>
-
-            {/* Trust indicators */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mt-12 text-green-200">
-              <div className="flex items-center space-x-2">
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-current text-yellow-400" />
-                  ))}
-                </div>
-                <span className="text-sm">4.9/5 from 2,400+ reviews</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Truck className="w-4 h-4" />
-                <span className="text-sm">Free worldwide shipping</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      <CTASection/>
       <Footer />
     </div>
   );
 };
 
-export default NelovelAboutPageOptimized;
+export default AboutUs;

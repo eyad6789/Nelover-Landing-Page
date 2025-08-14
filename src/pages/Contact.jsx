@@ -86,7 +86,7 @@ const ContactPageOptimized = () => {
       info: "+964 773 6285 961",
       description: "Available 9 AM - 6 PM (Baghdad Time)",
       action: "Call Now",
-      bgColor: "from-blue-500 to-cyan-500",
+      bgColor: "from-indigo-500 to-cyan-500",
       gradient: "bg-gradient-to-br from-blue-100 to-cyan-100"
     },
     {
@@ -190,26 +190,6 @@ const ContactPageOptimized = () => {
                 need support, or want to collaborate - we're here to help.
               </p>
             </div>
-
-            {/* Quick Contact Stats */}
-            <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto transition-all duration-1000 delay-500 ${
-              isVisible['hero-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}>
-              {[
-                { icon: Clock, text: "24h Response", color: "from-blue-400 to-cyan-400" },
-                { icon: Users, text: "Expert Team", color: "from-green-400 to-emerald-400" },
-                { icon: Globe, text: "Global Support", color: "from-purple-400 to-pink-400" },
-                { icon: MessageCircle, text: "Live Chat", color: "from-orange-400 to-red-400" }
-              ].map((feature, index) => (
-                <div key={index} className="group">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform duration-300`}>
-                    <feature.icon className="w-6 h-6 text-white" />
-                  </div>
-                  <p className="text-sm text-green-200 group-hover:text-white transition-colors duration-300">{feature.text}</p>
-                </div>
-              ))}
-            </div>
-
             {/* CTA Buttons */}
             <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center transition-all duration-1000 delay-700 ${
               isVisible['hero-section'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
@@ -289,7 +269,7 @@ const ContactPageOptimized = () => {
       {/* Main Contact Form Section */}
       <section className="py-20 bg-gradient-to-br from-gray-50 to-green-50">
         <div className="max-w-7xl mx-auto px-6" data-animate id="form-section">
-          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+          <div className="bg-white rounded-3xl overflow-hidden">
             <div className="grid lg:grid-cols-2">
               
               {/* Left Column - Contact Form */}

@@ -1,17 +1,94 @@
 import React, { useState, useEffect } from 'react';
-import { Leaf, Menu, X } from 'lucide-react';
-import { useNavigate } from 'react-router-dom'; // Add this import for navigation
+import { Leaf, Menu, X, Languages, Globe } from 'lucide-react';
+
+// Enhanced Language Context with localStorage persistence
+const useLanguage = () => {
+  // Initialize language from localStorage or default to 'en'
+  const [language, setLanguage] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('nelover-language') || 'en';
+    }
+    return 'en';
+  });
+  
+  const [isRTL, setIsRTL] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedLang = localStorage.getItem('nelover-language') || 'en';
+      return savedLang === 'ar';
+    }
+    return false;
+  });
+
+  const translations = {
+    en: {
+      home: "Home",
+      products: "Products", 
+      about: "About",
+      contact: "Contact",
+      smartGardens: "Smart Gardens",
+      shopNow: "Shop Now"
+    },
+    ar: {
+      home: "الرئيسية",
+      products: "المنتجات",
+      about: "من نحن", 
+      contact: "اتصل بنا",
+      smartGardens: "الحدائق الذكية",
+      shopNow: "تسوق الآن"
+    }
+  };
+
+  // Apply language settings when component mounts or language changes
+  useEffect(() => {
+    // Save to localStorage
+    localStorage.setItem('nelover-language', language);
+    
+    // Update document direction and language
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = language;
+    
+    // Update isRTL state
+    setIsRTL(language === 'ar');
+  }, [language]);
+
+  // Apply initial settings when component mounts
+  useEffect(() => {
+    const savedLang = localStorage.getItem('nelover-language') || 'en';
+    document.documentElement.dir = savedLang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = savedLang;
+  }, []);
+
+  const toggleLanguage = () => {
+    const newLanguage = language === 'en' ? 'ar' : 'en';
+    setLanguage(newLanguage);
+    
+    // Immediate DOM updates
+    document.documentElement.dir = newLanguage === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = newLanguage;
+    
+    // Save to localStorage immediately
+    localStorage.setItem('nelover-language', newLanguage);
+    
+    // Optional: Add a small visual feedback
+    console.log(`Language switched to: ${newLanguage === 'en' ? 'English' : 'Arabic'}`);
+  };
+
+  const t = (key) => translations[language][key] || key;
+
+  return { language, isRTL, toggleLanguage, t };
+};
 
 const Navbar = ({ currentPage = 'home' }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const navigate = useNavigate(); // Add this hook for navigation
+  const [showLanguageTooltip, setShowLanguageTooltip] = useState(false);
+  const { language, isRTL, toggleLanguage, t } = useLanguage();
   
   const navLists = [
-    { label: "Home", path: "/", id: "home" },
-    { label: "Products", path: "/productsOptimized", id: "productsOptimized" },
-    { label: "About", path: "/about", id: "about" },
-    { label: "Contact", path: "/contact", id: "contact" }
+    { label: t('home'), path: "/", id: "home" },
+    { label: t('products'), path: "/productsOptimized", id: "productsOptimized" },
+    { label: t('about'), path: "/about", id: "about" },
+    { label: t('contact'), path: "/contact", id: "contact" }
   ];
 
   useEffect(() => {
@@ -22,9 +99,13 @@ const Navbar = ({ currentPage = 'home' }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Add navigation handler
   const handleShopNowClick = () => {
-    navigate('/productsOptimized');
+    // Replace with your navigation logic
+    window.location.href = '/productsOptimized';
+  };
+
+  const handleNavigation = (path) => {
+    window.location.href = path;
   };
 
   return (
@@ -32,9 +113,9 @@ const Navbar = ({ currentPage = 'home' }) => {
       scrolled ? 'bg-white/95 backdrop-blur-lg shadow-lg' : 'bg-transparent'
     }`}>
       <div className="w-11/12 mx-auto px-4 sm:px-6 lg:px-8">
-        <nav className="flex items-center justify-between h-16 md:h-20">
-          {/* Enhanced Logo */}
-          <div className="flex-shrink-0 flex items-center space-x-3 group cursor-pointer">
+        <nav className={`flex items-center justify-between h-16 md:h-20 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          {/* Enhanced Logo (Original Design) */}
+          <div className={`flex-shrink-0 flex items-center space-x-3 group cursor-pointer ${isRTL ? 'space-x-reverse' : ''}`} onClick={() => handleNavigation('/')}>
             <div className="relative">
               <Leaf className={`w-8 h-8 transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 ${
                 scrolled ? 'text-green-600' : 'text-green-400'
@@ -50,7 +131,7 @@ const Navbar = ({ currentPage = 'home' }) => {
               <span className={`text-xs font-light -mt-1 transition-colors duration-300 ${
                 scrolled ? 'text-gray-500' : 'text-green-200'
               }`}>
-                Smart Gardens
+                {t('smartGardens')}
               </span>
             </div>
           </div>
@@ -75,8 +156,58 @@ const Navbar = ({ currentPage = 'home' }) => {
             ))}
           </div>
 
-          {/* Enhanced CTA Button - UPDATED TO NAVIGATE */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Language Toggle + CTA Buttons */}
+          <div className={`hidden md:flex items-center space-x-4 ${isRTL ? 'space-x-reverse' : ''}`}>
+            {/* Language Toggle Button */}
+            <div className="relative">
+              <button
+                onClick={toggleLanguage}
+                onMouseEnter={() => setShowLanguageTooltip(true)}
+                onMouseLeave={() => setShowLanguageTooltip(false)}
+                className={`group relative flex items-center space-x-2 px-4 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
+                  scrolled 
+                    ? 'border-2 border-gray-300 hover:border-green-500 bg-white hover:bg-green-50 text-gray-700 hover:text-green-600' 
+                    : 'border-2 border-white/30 bg-white/10 hover:bg-white/20 text-white hover:text-green-200'
+                } ${isRTL ? 'space-x-reverse' : ''}`}
+                aria-label="Toggle Language"
+              >
+                <Globe className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
+                <div className="flex items-center space-x-1">
+                  <span className={`text-sm font-bold transition-colors duration-300 ${
+                    language === 'en' ? (scrolled ? 'text-green-600' : 'text-green-200') : (scrolled ? 'text-gray-500' : 'text-white/70')
+                  }`}>
+                    EN
+                  </span>
+                  <span className={`text-sm ${scrolled ? 'text-gray-400' : 'text-white/50'}`}>|</span>
+                  <span className={`text-sm font-bold transition-colors duration-300 ${
+                    language === 'ar' ? (scrolled ? 'text-green-600' : 'text-green-200') : (scrolled ? 'text-gray-500' : 'text-white/70')
+                  }`}>
+                    ع
+                  </span>
+                </div>
+                
+                {/* Active indicator */}
+                <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 h-1 bg-gradient-to-r from-green-500 to-emerald-500 transition-all duration-300 rounded-full ${
+                  language === 'en' ? 'w-6' : 'w-8'
+                }`}></div>
+              </button>
+
+              {/* Language Toggle Tooltip */}
+              {showLanguageTooltip && (
+                <div className={`absolute top-12 left-1/2 transform -translate-x-1/2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-300 z-50 ${
+                  scrolled 
+                    ? 'bg-gray-800 text-white' 
+                    : 'bg-white/90 backdrop-blur-sm text-gray-800'
+                }`}>
+                  {language === 'en' ? 'تبديل للعربية' : 'Switch to English'}
+                  <div className={`absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 rotate-45 ${
+                    scrolled ? 'bg-gray-800' : 'bg-white/90'
+                  }`}></div>
+                </div>
+              )}
+            </div>
+
+            {/* Shop Now Button */}
             <button 
               onClick={handleShopNowClick}
               className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
@@ -85,7 +216,7 @@ const Navbar = ({ currentPage = 'home' }) => {
                   : 'bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white hover:text-gray-800'
               }`}
             >
-              Shop Now
+              {t('shopNow')}
             </button>
           </div>
 
@@ -120,17 +251,66 @@ const Navbar = ({ currentPage = 'home' }) => {
                 {nav.label}
               </a>
             ))}
+            
+            {/* Mobile Language Toggle */}
             <div className="mt-4 pt-4 border-t border-gray-200">
+              <button
+                onClick={toggleLanguage}
+                className="w-full mb-3 flex items-center justify-center space-x-3 px-4 py-3 bg-gray-50 hover:bg-green-50 text-gray-700 hover:text-green-600 rounded-xl transition-all duration-300 group"
+              >
+                <Globe className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
+                <span className="font-medium">
+                  {language === 'en' ? 'العربية' : 'English'}
+                </span>
+                <div className="flex items-center space-x-1 px-2 py-1 bg-green-100 text-green-600 rounded-full text-xs font-bold">
+                  <span className={language === 'en' ? 'opacity-100' : 'opacity-50'}>EN</span>
+                  <span>|</span>
+                  <span className={language === 'ar' ? 'opacity-100' : 'opacity-50'}>ع</span>
+                </div>
+              </button>
+              
               <button 
-                onClick={handleShopNowClick}
+                onClick={() => {
+                  handleShopNowClick();
+                  setIsMobileMenuOpen(false);
+                }}
                 className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-xl font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-300"
               >
-                Shop Now
+                {t('shopNow')}
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* RTL Styles */}
+      <style jsx>{`
+        [dir="rtl"] .space-x-2 > * + * {
+          margin-left: 0;
+          margin-right: 0.5rem;
+        }
+        [dir="rtl"] .space-x-3 > * + * {
+          margin-left: 0;
+          margin-right: 0.75rem;
+        }
+        [dir="rtl"] .space-x-4 > * + * {
+          margin-left: 0;
+          margin-right: 1rem;
+        }
+        [dir="rtl"] .space-x-1 > * + * {
+          margin-left: 0;
+          margin-right: 0.25rem;
+        }
+        [dir="rtl"] .flex-row-reverse {
+          flex-direction: row-reverse;
+        }
+        [dir="rtl"] .text-left {
+          text-align: right;
+        }
+        [dir="rtl"] .text-right {
+          text-align: left;
+        }
+      `}</style>
     </header>
   );
 };
