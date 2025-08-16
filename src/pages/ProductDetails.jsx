@@ -654,7 +654,7 @@ const HowItWorks = () => {
 };
 
 // Main App Component
-const Product = () => {
+const ProductDetails = () => {
   return (
     <div className="min-h-screen bg-white">
       <Hero />
@@ -667,4 +667,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default ProductDetails;

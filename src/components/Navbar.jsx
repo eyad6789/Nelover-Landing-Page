@@ -1,89 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Leaf, Menu, X, Languages, Globe } from 'lucide-react';
-
-// Enhanced Language Context with localStorage persistence
-const useLanguage = () => {
-  // Initialize language from localStorage or default to 'en'
-  const [language, setLanguage] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('nelover-language') || 'en';
-    }
-    return 'en';
-  });
-  
-  const [isRTL, setIsRTL] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const savedLang = localStorage.getItem('nelover-language') || 'en';
-      return savedLang === 'ar';
-    }
-    return false;
-  });
-
-  const translations = {
-    en: {
-      home: "Home",
-      products: "Products", 
-      about: "About",
-      contact: "Contact",
-      smartGardens: "Smart Gardens",
-      shopNow: "Shop Now"
-    },
-    ar: {
-      home: "الرئيسية",
-      products: "المنتجات",
-      about: "من نحن", 
-      contact: "اتصل بنا",
-      smartGardens: "الحدائق الذكية",
-      shopNow: "تسوق الآن"
-    }
-  };
-
-  // Apply language settings when component mounts or language changes
-  useEffect(() => {
-    // Save to localStorage
-    localStorage.setItem('nelover-language', language);
-    
-    // Update document direction and language
-    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.lang = language;
-    
-    // Update isRTL state
-    setIsRTL(language === 'ar');
-  }, [language]);
-
-  // Apply initial settings when component mounts
-  useEffect(() => {
-    const savedLang = localStorage.getItem('nelover-language') || 'en';
-    document.documentElement.dir = savedLang === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.lang = savedLang;
-  }, []);
-
-  const toggleLanguage = () => {
-    const newLanguage = language === 'en' ? 'ar' : 'en';
-    setLanguage(newLanguage);
-    
-    // Immediate DOM updates
-    document.documentElement.dir = newLanguage === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.lang = newLanguage;
-    
-    // Save to localStorage immediately
-    localStorage.setItem('nelover-language', newLanguage);
-    
-    // Optional: Add a small visual feedback
-    console.log(`Language switched to: ${newLanguage === 'en' ? 'English' : 'Arabic'}`);
-  };
-
-  const t = (key) => translations[language][key] || key;
-
-  return { language, isRTL, toggleLanguage, t };
-};
+import { Leaf, Menu, X, Globe } from 'lucide-react';
+// Import your existing LanguageContext hook
+import { useLanguage } from '../context/LanguageContext'; // Adjust path as needed
 
 const Navbar = ({ currentPage = 'home' }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showLanguageTooltip, setShowLanguageTooltip] = useState(false);
+  
+  // Use the global language context instead of local state
   const { language, isRTL, toggleLanguage, t } = useLanguage();
   
+  // Navigation items will now use the global translation function
   const navLists = [
     { label: t('home'), path: "/", id: "home" },
     { label: t('products'), path: "/productsOptimized", id: "productsOptimized" },
@@ -100,7 +28,6 @@ const Navbar = ({ currentPage = 'home' }) => {
   }, []);
 
   const handleShopNowClick = () => {
-    // Replace with your navigation logic
     window.location.href = '/productsOptimized';
   };
 
@@ -114,7 +41,7 @@ const Navbar = ({ currentPage = 'home' }) => {
     }`}>
       <div className="w-11/12 mx-auto px-4 sm:px-6 lg:px-8">
         <nav className={`flex items-center justify-between h-16 md:h-20 ${isRTL ? 'flex-row-reverse' : ''}`}>
-          {/* Enhanced Logo (Original Design) */}
+          {/* Enhanced Logo */}
           <div className={`flex-shrink-0 flex items-center space-x-3 group cursor-pointer ${isRTL ? 'space-x-reverse' : ''}`} onClick={() => handleNavigation('/')}>
             <div className="relative">
               <Leaf className={`w-8 h-8 transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 ${

@@ -1,11 +1,10 @@
-
-import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { LanguageProvider } from './context/LanguageContext'; // Adjust path as needed
 import Home from './pages/Home'; // Update path if needed
-import Product from './pages/Product'; // Update path if needed
+import ProductDetails from './pages/ProductDetails'; // Update path if needed
 import * as Sentry from '@sentry/react';
 
-const App = () => {
+const AppContent = () => {
   const location = useLocation();
   
   // Check if current path is a product showcase route
@@ -34,11 +33,19 @@ const App = () => {
   return (
     <main>
       {isProductRoute ? (
-        <Product productId={getProductId()} />
+        <ProductDetails productId={getProductId()} />
       ) : (
         <Home />
       )}
     </main>
+  );
+};
+
+const App = () => {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 };
 

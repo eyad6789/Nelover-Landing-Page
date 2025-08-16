@@ -2,10 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './App.jsx'
-import Product from './pages/Product.jsx'  
+import ProductDetails from './pages/ProductDetails.jsx'  
 import ContactPage from './pages/Contact.jsx'    
 import AboutUs from './pages/AboutUs.jsx'    
-import Products from './pages/Product.jsx'  
+import Products from './pages/ProductDetails.jsx'  
 
 // Import your beautiful 404 page
 import Error404Page from './pages/Error404Page.jsx'
@@ -40,7 +40,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Routes>
         {/* Existing Routes */}
         <Route path="/" element={<Home />} />
-        <Route path="/product" element={<Product />} />
+        <Route path="/ProductDetails" element={<ProductDetails />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/productsOptimized" element={<Products />} />

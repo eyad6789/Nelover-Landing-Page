@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Add this import
+import { Link } from 'react-router-dom';
 import { 
   Play, Plus, ChevronDown, ChevronRight, Target, Users, Lightbulb, 
   Phone, Mail, ArrowRight, Leaf, Star, Shield, Truck, Clock,
@@ -9,10 +9,12 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import AnnouncementCards from '../components/AnnouncementCards ';
 import CTASection from '../components/CTASection';
+import { useLanguage } from '../context/LanguageContext'; // Import language context
 
 const HeroSection = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isLoaded, setIsLoaded] = useState(false);
+  const { t, isRTL } = useLanguage(); // Use language context
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -58,42 +60,42 @@ const HeroSection = () => {
         ))}
       </div>
 
-      <Navbar />
+      <Navbar currentPage="home" />
       
       {/* Main Content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-6">
-        <div className="max-w-6xl text-center text-white">
+        <div className={`max-w-6xl text-center text-white ${isRTL ? 'rtl' : 'ltr'}`}>
 
           {/* Main Headlines */}
           <div className={`mb-8 transition-all duration-1000 delay-300 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6">
-              <span>Growing </span><span className="bg-gradient-to-r from-green-300 via-emerald-300 to-green-400 bg-clip-text text-transparent">
-                Smarter</span><span className='block'>Gardens</span>
+              <span>{t('growingSmarter')} </span>
+              <span className='block'>{t('gardens')}</span>
             </h1>
             <p className="text-xl md:text-2xl text-green-100 max-w-3xl mx-auto leading-relaxed">
-              Revolutionary indoor gardening technology that grows fresh food year-round. 
-              No soil, no mess, no experience needed.
+              {t('heroMainText')}
             </p>
           </div>
+
           {/* CTA Buttons */}
           <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center transition-all duration-1000 delay-700 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}>
+          } ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
             <Link 
               to="/garden-pro-elite"
               className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center"
             >
-              <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-              Start Growing Today
+              <Play className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'} group-hover:scale-110 transition-transform`} />
+              {t('startGrowingToday')}
             </Link>
             <Link 
               to="/products"
               className="group border-2 border-white/30 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-gray-800 transition-all duration-300 transform hover:scale-105 flex items-center"
             >
-              View All Products
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              {t('viewAllProducts')}
+              <ArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'} group-hover:translate-x-1 transition-transform`} />
             </Link>
           </div>
 
@@ -103,13 +105,13 @@ const HeroSection = () => {
           }`}>
             <div className="flex flex-wrap justify-center gap-4 text-sm">
               <Link to="/garden-compact" className="text-green-200 hover:text-white transition-colors border-b border-transparent hover:border-green-200">
-                Perfect for Small Spaces →
+                {t('quickAccessSmallSpaces')}
               </Link>
               <Link to="/garden-hydro-max" className="text-green-200 hover:text-white transition-colors border-b border-transparent hover:border-green-200">
-                Professional Growing →
+                {t('quickAccessProfessional')}
               </Link>
               <Link to="/smart-tower-vertical" className="text-green-200 hover:text-white transition-colors border-b border-transparent hover:border-green-200">
-                Vertical Gardens →
+                {t('quickAccessVertical')}
               </Link>
             </div>
           </div>
@@ -129,15 +131,17 @@ const HeroSection = () => {
 
 // Updated Products Section with Navigation
 const ProductsSection = () => {
+  const { t, isRTL } = useLanguage();
+
   return (
     <section id="products-section" className="py-20 bg-gradient-to-b from-white to-green-50">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className={`max-w-7xl mx-auto px-6 ${isRTL ? 'rtl' : 'ltr'}`}>
         {/* Section Header with Product Links */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-            Choose Your Perfect <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Garden</span>
+            {t('chooseYourGarden')}
           </h2>
-          <p className="text-xl text-gray-600 mb-8">Discover our complete range of smart indoor gardening solutions</p>
+          <p className="text-xl text-gray-600 mb-8">{t('discoverProducts')}</p>
           
           {/* Quick Product Navigation */}
           <div className="flex flex-wrap justify-center gap-4 mb-8">
@@ -145,29 +149,29 @@ const ProductsSection = () => {
               to="/garden-pro-elite"
               className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full font-medium transition-colors duration-300 flex items-center"
             >
-              <Zap className="w-5 h-5 mr-2" />
-              Elite Series
+              <Zap className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('eliteSeries')}
             </Link>
             <Link 
               to="/garden-compact"
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-medium transition-colors duration-300 flex items-center"
             >
-              <Leaf className="w-5 h-5 mr-2" />
-              Compact Series
+              <Leaf className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('compactSeries')}
             </Link>
             <Link 
               to="/garden-hydro-max"
               className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-full font-medium transition-colors duration-300 flex items-center"
             >
-              <Droplets className="w-5 h-5 mr-2" />
-              Pro Series
+              <Droplets className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('proSeries')}
             </Link>
             <Link 
               to="/smart-tower-vertical"
               className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-full font-medium transition-colors duration-300 flex items-center"
             >
-              <Sun className="w-5 h-5 mr-2" />
-              Tower Series
+              <Sun className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('towerSeries')}
             </Link>
           </div>
         </div>
@@ -181,8 +185,8 @@ const ProductsSection = () => {
             to="/products"
             className="inline-flex items-center text-green-600 hover:text-green-700 font-semibold text-lg transition-colors duration-300 group"
           >
-            View All Products & Compare Features
-            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            {t('viewAllCompare')}
+            <ArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'} group-hover:translate-x-1 transition-transform`} />
           </Link>
         </div>
       </div>
@@ -194,6 +198,7 @@ const ProductsSection = () => {
 const AboutSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('mission');
+  const { t, isRTL } = useLanguage();
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -210,32 +215,32 @@ const AboutSection = () => {
   const tabs = [
     {
       id: 'mission',
-      title: 'Our Mission',
+      title: t('missionTitle'),
       icon: Target,
-      content: "We're revolutionizing how people grow food at home. Our mission is to make fresh, healthy produce accessible to everyone, regardless of space, experience, or climate. Through innovative technology and sustainable practices, we're building a future where every home can be a source of fresh nutrition.",
-      cta: { text: "See Our Products", link: "/products" }
+      content: t('missionDescription'),
+      cta: { text: t('viewAllProducts'), link: "/products" }
     },
     {
       id: 'story',
-      title: 'Our Story',
+      title: t('ourStory'),
       icon: Heart,
-      content: "Founded in 2022 by a team of agricultural engineers and tech innovators, Nelover was born from a simple observation: traditional gardening shouldn't be the only way to grow fresh food. We've helped over 50,000 families grow millions of fresh vegetables and herbs, reducing their carbon footprint while improving their health.",
-      cta: { text: "Start Your Journey", link: "/garden-pro-elite" }
+      content: t('whatWeDoText'),
+      cta: { text: t('startGrowingToday'), link: "/garden-pro-elite" }
     },
     {
       id: 'vision',
-      title: 'Our Vision',
+      title: t('visionTitle'),
       icon: Lightbulb,
-      content: "We envision a world where fresh food production is decentralized, sustainable, and accessible to all. By 2030, we aim to have Nelover gardens in 1 million homes worldwide, creating a global network of sustainable food production that reduces transportation emissions and promotes healthier communities.",
-      cta: { text: "Join the Movement", link: "/garden-compact" }
+      content: t('goalsVisionText'),
+      cta: { text: t('joinMovement'), link: "/garden-compact" }
     }
   ];
 
   const stats = [
-    { number: '50,000+', label: 'Happy Customers', icon: Users },
-    { number: '2M+', label: 'Plants Grown', icon: Leaf },
-    { number: '90%', label: 'Water Saved', icon: Droplets },
-    { number: '365', label: 'Days Growing', icon: Clock }
+    { number: '50,000+', label: t('customers'), icon: Users },
+    { number: '15', label: t('countries'), icon: Leaf },
+    { number: '99%', label: t('successRate'), icon: Droplets },
+    { number: '2024', label: t('innovationAward'), icon: Clock }
   ];
 
   return (
@@ -246,13 +251,13 @@ const AboutSection = () => {
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-emerald-500 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <div className={`relative z-10 max-w-7xl mx-auto px-6 ${isRTL ? 'rtl' : 'ltr'}`}>
         {/* Header */}
         <div className={`text-center mb-16 transition-all duration-1000 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
           <h2 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
-            Growing the <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Future</span>
+            {t('growingTheFuture')}
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full" />
         </div>
@@ -273,23 +278,23 @@ const AboutSection = () => {
         </div>
 
         {/* Main Content */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className={`grid lg:grid-cols-2 gap-12 items-center ${isRTL ? 'lg:grid-flow-dense' : ''}`}>
           {/* Left: Tab Navigation */}
           <div className={`transition-all duration-1000 delay-500 ${
             isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-          }`}>
+          } ${isRTL ? 'lg:col-start-2' : ''}`}>
             <div className="space-y-4">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`w-full text-left p-6 rounded-2xl transition-all duration-300 group ${
+                  className={`w-full text-${isRTL ? 'right' : 'left'} p-6 rounded-2xl transition-all duration-300 group ${
                     activeTab === tab.id 
                       ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg' 
-                      : 'bg-gray-50 hover:bg-gray-100/10 text-gray-700'
+                      : 'bg-gray-50 hover:bg-gray-100 text-gray-700'
                   }`}
                 >
-                  <div className="flex items-center space-x-4">
+                  <div className={`flex items-center ${isRTL ? 'flex-row-reverse space-x-reverse' : ''} space-x-4`}>
                     <div className={`p-3 rounded-xl transition-all duration-300 ${
                       activeTab === tab.id 
                         ? 'bg-white/20' 
@@ -307,10 +312,10 @@ const AboutSection = () => {
                       {activeTab === tab.id && (
                         <Link 
                           to={tab.cta.link}
-                          className="inline-flex items-center mt-4 text-white/90 hover:text-white font-medium transition-colors"
+                          className={`inline-flex items-center mt-4 text-white/90 hover:text-white font-medium transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
                         >
                           {tab.cta.text}
-                          <ArrowRight className="w-4 h-4 ml-2" />
+                          <ArrowRight className={`w-4 h-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
                         </Link>
                       )}
                     </div>
@@ -323,7 +328,7 @@ const AboutSection = () => {
           {/* Right: Visual */}
           <div className={`transition-all duration-1000 delay-700 ${
             isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
-          }`}>
+          } ${isRTL ? 'lg:col-start-1' : ''}`}>
             <div className="relative">
               {/* Main Image */}
               <div className="aspect-square rounded-3xl bg-gradient-to-br from-green-500 via-emerald-500 to-green-600 p-8 shadow-2xl">
@@ -332,24 +337,24 @@ const AboutSection = () => {
                     <div className="w-24 h-24 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-6">
                       <Leaf className="w-12 h-12" />
                     </div>
-                    <h4 className="text-2xl font-bold mb-4">Smart Growing Technology</h4>
-                    <p className="text-white/80 mb-6">AI-powered systems that learn and adapt to grow the perfect plants every time.</p>
+                    <h4 className="text-2xl font-bold mb-4">{t('smartGrowingTech')}</h4>
+                    <p className="text-white/80 mb-6">{t('aiOptimization')}</p>
                     <Link 
                       to="/garden-pro-elite"
-                      className="inline-flex items-center bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-full transition-colors duration-300"
+                      className={`inline-flex items-center bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-full transition-colors duration-300 ${isRTL ? 'flex-row-reverse' : ''}`}
                     >
-                      See Technology
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                      {t('viewDetails')}
+                      <ArrowRight className={`w-4 h-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
                     </Link>
                   </div>
                 </div>
               </div>
 
               {/* Floating Elements */}
-              <div className="absolute -top-4 -right-4 w-16 h-16 bg-white rounded-2xl shadow-lg flex items-center justify-center">
+              <div className={`absolute -top-4 ${isRTL ? '-left-4' : '-right-4'} w-16 h-16 bg-white rounded-2xl shadow-lg flex items-center justify-center`}>
                 <Wifi className="w-8 h-8 text-green-500" />
               </div>
-              <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+              <div className={`absolute -bottom-4 ${isRTL ? '-right-4' : '-left-4'} w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center`}>
                 <Droplets className="w-6 h-6 text-white" />
               </div>
             </div>
