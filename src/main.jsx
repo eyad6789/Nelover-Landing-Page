@@ -1,14 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Home from './App.jsx'
+import App from './App.jsx'  // Import App, not Home
 import ProductDetails from './pages/ProductDetails.jsx'  
 import ContactPage from './pages/Contact.jsx'    
 import AboutUs from './pages/AboutUs.jsx'    
-import Products from './pages/ProductDetails.jsx'  
+import Products from './pages/Products.jsx'  // This should probably be Products, not ProductDetails
+import Home from './pages/Home.jsx' // Import Home from the correct location
 
 // Import your beautiful 404 page
 import Error404Page from './pages/Error404Page.jsx'
+
+// Import LanguageProvider
+import { LanguageProvider } from './context/LanguageContext'
 
 import './index.css'
 
@@ -36,31 +40,33 @@ Sentry.init({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Router>
-      <Routes>
-        {/* Existing Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/ProductDetails" element={<ProductDetails />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/productsOptimized" element={<Products />} />
-        
-        {/* New Product Showcase Routes - All point to Home (App.jsx) */}
-        <Route path="/product/:productId" element={<Home />} />
-        <Route path="/garden-pro-elite" element={<Home />} />
-        <Route path="/garden-compact" element={<Home />} />
-        <Route path="/hydro-max-pro" element={<Home />} />
-        <Route path="/smart-tower-vertical" element={<Home />} />
-        
-        {/* Optional: Additional product routes */}
-        <Route path="/products/garden-pro-elite" element={<Home />} />
-        <Route path="/products/garden-compact" element={<Home />} />
-        <Route path="/products/hydro-max-pro" element={<Home />} />
-        <Route path="/products/smart-tower-vertical" element={<Home />} />
-        
-        {/* 404 Error Page - MUST BE LAST! */}
-        <Route path="*" element={<Error404Page />} />
-      </Routes>
-    </Router>
+    <LanguageProvider>
+      <Router>
+        <Routes>
+          {/* Main Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/productsOptimized" element={<Products />} />
+          
+          {/* Product Detail Routes */}
+          <Route path="/ProductDetails" element={<ProductDetails />} />
+          <Route path="/product/:productId" element={<ProductDetails />} />
+          <Route path="/garden-pro-elite" element={<ProductDetails productId="garden-pro-elite" />} />
+          <Route path="/garden-compact" element={<ProductDetails productId="garden-compact" />} />
+          <Route path="/garden-hydro-max" element={<ProductDetails productId="garden-hydro-max" />} />
+          <Route path="/smart-tower-vertical" element={<ProductDetails productId="smart-tower-vertical" />} />
+          
+          {/* Optional: Additional product routes */}
+          <Route path="/products/garden-pro-elite" element={<ProductDetails productId="garden-pro-elite" />} />
+          <Route path="/products/garden-compact" element={<ProductDetails productId="garden-compact" />} />
+          <Route path="/products/garden-hydro-max" element={<ProductDetails productId="garden-hydro-max" />} />
+          <Route path="/products/smart-tower-vertical" element={<ProductDetails productId="smart-tower-vertical" />} />
+          
+          {/* 404 Error Page - MUST BE LAST! */}
+          <Route path="*" element={<Error404Page />} />
+        </Routes>
+      </Router>
+    </LanguageProvider>
   </React.StrictMode>,
 )
