@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, ArrowRight, Leaf, Target, Award } from 'lucide-react';
+import { Play, ArrowRight, Leaf, Target, Award, X } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const AnnouncementCards = () => {
+  const { t, isRTL } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
 
@@ -18,81 +20,81 @@ const AnnouncementCards = () => {
   const announcements = [
     {
       id: 'garden-pro-elite',
-      type: "NEW RELEASE",
-      title: "GardenPro Elite",
-      subtitle: "AI-Powered Smart Garden",
+      type: t('newRelease'),
+      title: t('language') === 'en' ? 'GardenPro Elite' : 'حديقة برو إيليت',
+      subtitle: t('language') === 'en' ? 'AI-Powered Smart Garden' : 'حديقة ذكية مدعومة بالذكاء الاصطناعي',
       price: "$499",
-      date: "September 9, 2024",
+      date: t('language') === 'en' ? 'September 9, 2024' : '9 سبتمبر، 2024',
       image: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=600&h=400&fit=crop&crop=center",
       size: "large",
       hasImage: true,
-      badge: "Best Seller"
+      badge: t('bestSeller')
     },
     {
       id: 'garden-compact',
-      type: "FEATURED",
-      title: "GardenCompact",
-      subtitle: "Perfect for Small Spaces",
+      type: t('language') === 'en' ? 'FEATURED' : 'مميز',
+      title: t('language') === 'en' ? 'GardenCompact' : 'حديقة مدمجة',
+      subtitle: t('perfectStarter'),
       price: "$299",
-      date: "September 9, 2024",
+      date: t('language') === 'en' ? 'September 9, 2024' : '9 سبتمبر، 2024',
       size: "medium",
       hasImage: false,
-      badge: "Space Saver"
+      badge: t('spaceSaver')
     },
     {
       id: 'garden-hydro-max',
-      type: "PROFESSIONAL",
-      title: "HydroMax Pro",
-      subtitle: "Commercial Grade",
+      type: t('language') === 'en' ? 'PROFESSIONAL' : 'احترافي',
+      title: t('language') === 'en' ? 'HydroMax Pro' : 'هيدرو ماكس برو',
+      subtitle: t('commercialGrade'),
       price: "$1,299",
-      date: "September 9, 2024",
+      date: t('language') === 'en' ? 'September 9, 2024' : '9 سبتمبر، 2024',
       size: "small",
       hasImage: false,
-      badge: "Pro Choice"
+      badge: t('proChoice')
     },
     {
       id: 'garden-smart-tower',
-      type: "INNOVATIVE",
-      title: "SmartTower Vertical",
-      subtitle: "20 Plants Capacity",
+      type: t('language') === 'en' ? 'INNOVATIVE' : 'مبتكر',
+      title: t('language') === 'en' ? 'SmartTower Vertical' : 'برج ذكي عمودي',
+      subtitle: t('plantsCapacity'),
       price: "$899",
-      date: "September 9, 2024",
+      date: t('language') === 'en' ? 'September 9, 2024' : '9 سبتمبر، 2024',
       size: "small",
       hasImage: false,
-      badge: "Vertical Solution"
+      badge: t('verticalSolution')
     },
     {
       id: 'garden-mini',
-      type: "STARTER",
-      title: "Garden Mini",
-      subtitle: "Perfect Starter Kit",
+      type: t('language') === 'en' ? 'STARTER' : 'للمبتدئين',
+      title: t('language') === 'en' ? 'Garden Mini' : 'حديقة صغيرة',
+      subtitle: t('perfectStarterKit'),
       price: "$199",
-      date: "September 9, 2024",
+      date: t('language') === 'en' ? 'September 9, 2024' : '9 سبتمبر، 2024',
       size: "small-bottom",
       hasImage: false,
-      badge: "Beginner Friendly"
+      badge: t('beginnerFriendly')
     },
     {
       id: 'garden-plus',
-      type: "UPGRADED",
-      title: "Garden Plus",
-      subtitle: "Enhanced Features",
+      type: t('language') === 'en' ? 'UPGRADED' : 'محسن',
+      title: t('language') === 'en' ? 'Garden Plus' : 'حديقة بلس',
+      subtitle: t('enhancedFeatures'),
       price: "$399",
-      date: "September 9, 2024",
+      date: t('language') === 'en' ? 'September 9, 2024' : '9 سبتمبر، 2024',
       size: "small-bottom",
       hasImage: false,
-      badge: "Enhanced"
+      badge: t('enhanced')
     },
     {
       id: 'garden-outdoor',
-      type: "SEASONAL",
-      title: "Outdoor Edition",
-      subtitle: "Weather Resistant",
+      type: t('language') === 'en' ? 'SEASONAL' : 'موسمي',
+      title: t('language') === 'en' ? 'Outdoor Edition' : 'إصدار خارجي',
+      subtitle: t('weatherResistant'),
       price: "$699",
-      date: "September 9, 2024",
+      date: t('language') === 'en' ? 'September 9, 2024' : '9 سبتمبر، 2024',
       size: "small-bottom",
       hasImage: false,
-      badge: "All Weather"
+      badge: t('allWeather')
     }
   ];
 
@@ -116,32 +118,32 @@ const AnnouncementCards = () => {
       <div className="max-w-7xl mx-auto">
         <div className={`text-center mb-16 transition-all duration-1000 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
+        } ${isRTL ? 'text-center' : ''}`}>
           <h2 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
-            Choose Your <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Garden</span>
+            {t('choosePerfectGarden')}
           </h2>
           
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            From compact countertop gardens to professional growing systems, find the perfect fit for your space and needs.
+          <p className={`text-xl text-gray-600 max-w-3xl mx-auto mb-8 ${isRTL ? 'text-center' : ''}`}>
+            {t('discoverProducts')}
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+          <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
             <Link 
               to="/products"
-              className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center"
+              className={`group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}
             >
-              <Leaf className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-              Shop Smart Gardens
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              <Leaf className={`w-5 h-5 group-hover:scale-110 transition-transform ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('shopSmartGardens')}
+              <ArrowRight className={`w-5 h-5 group-hover:translate-x-1 transition-transform ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
             </Link>
             
             <button 
               onClick={() => setVideoModalOpen(true)}
-              className="group border-2 border-green-600 text-green-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-green-600 hover:text-white transition-all duration-300 transform hover:scale-105 flex items-center"
+              className={`group border-2 border-green-600 text-green-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-green-600 hover:text-white transition-all duration-300 transform hover:scale-105 flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}
             >
-              <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-              Watch Demo
+              <Play className={`w-5 h-5 group-hover:scale-110 transition-transform ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('watchDemo')}
             </button>
           </div>
         </div>
@@ -163,7 +165,7 @@ const AnnouncementCards = () => {
             >
               {/* Badge */}
               {announcement.badge && (
-                <div className="absolute top-3 left-3 z-20 bg-white/90 backdrop-blur-sm text-green-600 px-2 py-1 rounded-full text-xs font-semibold">
+                <div className={`absolute top-3 z-20 bg-white/90 backdrop-blur-sm text-green-600 px-2 py-1 rounded-full text-xs font-semibold ${isRTL ? 'right-3' : 'left-3'}`}>
                   {announcement.badge}
                 </div>
               )}
@@ -203,13 +205,13 @@ const AnnouncementCards = () => {
                 {/* Content */}
                 <div className="relative z-10">
                   <div className="mb-2 sm:mb-3">
-                    <span className="text-white/80 text-xs sm:text-xs md:text-sm font-semibold tracking-wide uppercase">
+                    <span className={`text-white/80 text-xs sm:text-xs md:text-sm font-semibold tracking-wide uppercase ${isRTL ? 'text-right' : 'text-left'}`}>
                       {announcement.type}
                     </span>
                   </div>
 
                   <h3 className={`
-                    text-white font-bold leading-tight mb-2
+                    text-white font-bold leading-tight mb-2 ${isRTL ? 'text-right' : 'text-left'}
                     ${announcement.size === 'large' ? 'text-lg sm:text-xl md:text-2xl lg:text-3xl' : 
                       announcement.size === 'medium' ? 'text-base sm:text-lg md:text-xl' : 
                       announcement.size.includes('small-bottom') ? 'text-sm sm:text-base md:text-lg' : 'text-base sm:text-lg md:text-xl'}
@@ -219,17 +221,17 @@ const AnnouncementCards = () => {
 
                   {/* Subtitle and Price */}
                   {announcement.subtitle && (
-                    <p className="text-white/80 text-sm mb-1">{announcement.subtitle}</p>
+                    <p className={`text-white/80 text-sm mb-1 ${isRTL ? 'text-right' : 'text-left'}`}>{announcement.subtitle}</p>
                   )}
                   {announcement.price && (
-                    <p className="text-white font-bold text-lg">{announcement.price}</p>
+                    <p className={`text-white font-bold text-lg ${isRTL ? 'text-right' : 'text-left'}`}>{announcement.price}</p>
                   )}
                 </div>
 
                 {/* Date */}
                 <div className="relative z-10 mt-auto">
                   <span className={`
-                    text-white/70 font-medium
+                    text-white/70 font-medium ${isRTL ? 'text-right' : 'text-left'}
                     ${announcement.size.includes('small-bottom') ? 'text-xs sm:text-sm' : 'text-xs sm:text-sm md:text-base'}
                   `}>
                     {announcement.date}
@@ -240,8 +242,8 @@ const AnnouncementCards = () => {
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
                 {/* Arrow indicator */}
-                <div className="absolute top-3 right-3 w-6 h-6 bg-white/20 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-110">
-                  <ArrowRight className="w-3 h-3 text-white" />
+                <div className={`absolute top-3 w-6 h-6 bg-white/20 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-110 ${isRTL ? 'left-3' : 'right-3'}`}>
+                  <ArrowRight className={`w-3 h-3 text-white ${isRTL ? 'rotate-180' : ''}`} />
                 </div>
               </div>
 
@@ -254,14 +256,14 @@ const AnnouncementCards = () => {
         {/* Bottom CTA */}
         <div className={`text-center mt-16 transition-all duration-1000 delay-600 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
-          <p className="text-gray-600 mb-6">Need help choosing the right garden for you?</p>
+        } ${isRTL ? 'text-center' : ''}`}>
+          <p className="text-gray-600 mb-6">{t('needHelp')}</p>
           <Link 
             to="/contact"
-            className="bg-white border-2 border-green-500 text-green-600 px-8 py-3 rounded-full font-semibold hover:bg-green-500 hover:text-white transition-all duration-300 transform hover:scale-105 inline-flex items-center"
+            className={`bg-white border-2 border-green-500 text-green-600 px-8 py-3 rounded-full font-semibold hover:bg-green-500 hover:text-white transition-all duration-300 transform hover:scale-105 inline-flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}
           >
-            <Target className="w-5 h-5 mr-2" />
-            Get Expert Recommendation
+            <Target className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+            {t('getExpertRec')}
           </Link>
         </div>
       </div>
@@ -270,15 +272,13 @@ const AnnouncementCards = () => {
       {videoModalOpen && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-gray-800">Smart Garden Demo</h3>
+            <div className={`flex justify-between items-center mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <h3 className="text-2xl font-bold text-gray-800">{t('smartGardenDemo')}</h3>
               <button 
                 onClick={() => setVideoModalOpen(false)}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <X className="w-6 h-6" />
               </button>
             </div>
             
@@ -286,31 +286,33 @@ const AnnouncementCards = () => {
             <div className="space-y-6">
               {/* Video Placeholder */}
               <div className="aspect-video bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center mb-6">
-                <div className="text-center text-green-800">
+                <div className={`text-center text-green-800 ${isRTL ? 'text-center' : ''}`}>
                   <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 cursor-pointer hover:scale-110 transition-transform duration-300">
                     <Play className="w-10 h-10 text-white ml-1" />
                   </div>
-                  <p className="text-lg font-medium">Watch Smart Garden in Action</p>
-                  <p className="text-sm text-green-600 mt-2">See how easy growing can be</p>
+                  <p className="text-lg font-medium">{t('watchInAction')}</p>
+                  <p className="text-sm text-green-600 mt-2">{t('easyGrowing')}</p>
                 </div>
               </div>
 
               {/* Demo Features */}
               <div className="grid md:grid-cols-3 gap-4">
-                <div className="bg-gray-50 rounded-xl p-4 text-center">
+                <div className={`bg-gray-50 rounded-xl p-4 text-center ${isRTL ? 'text-center' : ''}`}>
                   <Leaf className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <h4 className="font-semibold text-gray-800">Smart Growing</h4>
-                  <p className="text-sm text-gray-600">AI optimizes growth conditions</p>
+                  <h4 className="font-semibold text-gray-800">{t('smartGrowing')}</h4>
+                  <p className="text-sm text-gray-600">{t('aiOptimizes')}</p>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-4 text-center">
+                <div className={`bg-gray-50 rounded-xl p-4 text-center ${isRTL ? 'text-center' : ''}`}>
                   <Play className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <h4 className="font-semibold text-gray-800">App Control</h4>
-                  <p className="text-sm text-gray-600">Monitor from anywhere</p>
+                  <h4 className="font-semibold text-gray-800">{t('appControl')}</h4>
+                  <p className="text-sm text-gray-600">{t('monitorAnywhere')}</p>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-4 text-center">
+                <div className={`bg-gray-50 rounded-xl p-4 text-center ${isRTL ? 'text-center' : ''}`}>
                   <Award className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <h4 className="font-semibold text-gray-800">Proven Results</h4>
-                  <p className="text-sm text-gray-600">98% success rate</p>
+                  <h4 className="font-semibold text-gray-800">{t('provenResults')}</h4>
+                  <p className="text-sm text-gray-600">
+                    {t('language') === 'en' ? '98% success rate' : 'معدل نجاح 98%'}
+                  </p>
                 </div>
               </div>
 
@@ -319,10 +321,10 @@ const AnnouncementCards = () => {
                 <Link 
                   to="/garden-pro-elite"
                   onClick={() => setVideoModalOpen(false)}
-                  className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-3 rounded-full font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 inline-flex items-center"
+                  className={`bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-3 rounded-full font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 inline-flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}
                 >
-                  Start Growing Today
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  {t('startGrowingToday2')}
+                  <ArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
                 </Link>
               </div>
             </div>

@@ -4,6 +4,7 @@ import {
   Sun, Wifi, Zap, Award, Users, Globe, ArrowRight, Star,
   Shield, Truck, Clock, Heart, Target, Lightbulb, Menu, X
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -31,6 +32,7 @@ const useScrollAnimation = (ref, options = {}) => {
 
 // Hero Section
 const Hero = () => {
+  const { t, isRTL } = useLanguage();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isLoaded, setIsLoaded] = useState(false);
   
@@ -80,31 +82,31 @@ const Hero = () => {
       <Navbar />
       {/* Main Content */}
       <div className="relative z-10 flex items-center justify-center w-full px-6">
-        <div className="max-w-6xl text-center text-white">
+        <div className={`max-w-6xl text-center text-white ${isRTL ? 'text-center' : ''}`}>
           {/* Animated Badge */}
           <div className="text-center mb-12">
             <div className={`inline-flex items-center space-x-2 bg-green-50 border border-green-200 rounded-full px-4 py-2 mb-6 transition-all duration-1000 ${
               isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}>
+            } ${isRTL ? 'space-x-reverse' : ''}`}>
               <Award className="w-4 h-4 text-green-600" />
-              <span className="text-sm text-green-700">Innovation Award Winner</span>
+              <span className="text-sm text-green-700">{t('innovationWinner')}</span>
             </div>
             
             <h1 className={`text-5xl md:text-6xl lg:text-7xl font-semibold mb-4 transition-all duration-1000 delay-300 ${
               isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}>
-              GardenPro Elite
+              {t('gardenProElite')}
             </h1>
             
             <p className={`text-2xl md:text-3xl text-gray-500 mb-8 transition-all duration-1000 delay-500 ${
               isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}>
-              The future of indoor gardening.
+              {t('futureIndoorGardening')}
             </p>
           </div>
 
           {/* Feature Highlights */}
-            <div className={`relative mb-16 transition-all duration-1000 delay-700 ${
+          <div className={`relative mb-16 transition-all duration-1000 delay-700 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
           }`}>
             <div className="relative bg-gradient-to-br from-gray-50 via-green-50 to-gray-50 rounded-3xl p-12 overflow-hidden shadow-2xl">
@@ -132,7 +134,9 @@ const Hero = () => {
                       <div className="absolute top-6 left-6 right-6 h-16 bg-gray-900 rounded-xl overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-green-400 via-emerald-400 to-green-500 opacity-90 animate-pulse"></div>
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-white text-xs font-mono">Growing... 89%</div>
+                          <div className="text-white text-xs font-mono">
+                            {t('language') === 'en' ? 'Growing... 89%' : 'ينمو... 89%'}
+                          </div>
                         </div>
                       </div>
                       
@@ -173,37 +177,39 @@ const Hero = () => {
               </div>
             </div>
           </div>
-          {/* Picing */}
+
+          {/* Pricing */}
           <div className={`text-center mb-12 transition-all duration-1000 delay-900 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}>
             <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 border border-gray-200 shadow-xl max-w-md mx-auto">
               <div className="mb-4">
-                <div className="text-sm text-gray-500 mb-2">Starting at</div>
+                <div className={`text-sm text-gray-500 mb-2 ${isRTL ? 'text-center' : ''}`}>{t('startingAt')}</div>
                 <div className="text-4xl md:text-5xl font-semibold text-gray-800">$499</div>
-                <div className="text-gray-500 mt-2">or $41.58/mo. for 12 mo.*</div>
+                <div className={`text-gray-500 mt-2 ${isRTL ? 'text-center' : ''}`}>{t('monthlyPayment')}</div>
               </div>
               
-              <div className="space-y-2 mb-6 text-sm text-gray-600">
-                <div className="flex items-center justify-center space-x-2">
+              <div className={`space-y-2 mb-6 text-sm text-gray-600 ${isRTL ? 'text-center' : ''}`}>
+                <div className={`flex items-center justify-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
                   <Star className="w-4 h-4 fill-current text-green-500" />
-                  <span>4.9/5 rating (2,400+ reviews)</span>
+                  <span>{t('ratingReviews')}</span>
                 </div>
-                <div>Free shipping & 30-day returns</div>
+                <div>{t('freeShipping')}</div>
               </div>
             </div>
           </div>
+
           {/* CTA Buttons */}
-          <div className={` mb-2 flex flex-col sm:flex-row gap-6 justify-center items-center transition-all duration-1000 delay-700 ${
+          <div className={`mb-2 flex flex-col sm:flex-row gap-6 justify-center items-center transition-all duration-1000 delay-700 ${
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}>
-            <button className="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center">
-              <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-              Start Growing Today
+          } ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+            <button className={`group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Play className={`w-5 h-5 group-hover:scale-110 transition-transform ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('startGrowingToday')}
             </button>
-            <button className="group border-2 border-white/30 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-gray-800 transition-all duration-300 transform hover:scale-105 flex items-center">
-              Watch Demo
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            <button className={`group border-2 border-white/30 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-gray-800 transition-all duration-300 transform hover:scale-105 flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+              {t('watchDemo')}
+              <ArrowRight className={`w-5 h-5 group-hover:translate-x-1 transition-transform ${isRTL ? 'mr-2 rotate-180' : 'ml-2'}`} />
             </button>
           </div>
         </div>
@@ -229,6 +235,7 @@ const Hero = () => {
 
 // Video Carousel Component
 const VideoCarousel = () => {
+  const { t, isRTL } = useLanguage();
   const [currentVideo, setCurrentVideo] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -236,25 +243,25 @@ const VideoCarousel = () => {
   const highlights = [
     {
       id: 1,
-      title: ["Smart AI System.", "Growing made simple.", "Professional results."],
+      title: t('smartAISystem').split('.'),
       duration: 4,
       color: "from-green-500 to-emerald-600"
     },
     {
       id: 2,
-      title: ["Hydroponic Technology.", "No soil. No mess.", "Pure nutrition."],
+      title: t('hydroponicTech').split('.'),
       duration: 5,
       color: "from-blue-500 to-cyan-600"
     },
     {
       id: 3,
-      title: ["Year-round growing.", "Fresh herbs and vegetables.", "Every season."],
+      title: t('yearRoundGrowing').split('.'),
       duration: 3,
       color: "from-purple-500 to-pink-600"
     },
     {
       id: 4,
-      title: ["Mobile App Control.", "Monitor anywhere.", "Smart notifications."],
+      title: t('mobileAppControl').split('.'),
       duration: 4,
       color: "from-orange-500 to-red-600"
     }
@@ -289,8 +296,8 @@ const VideoCarousel = () => {
   return (
     <div className="relative">
       {/* Video Slides */}
-      <div className="flex transition-transform duration-700 ease-in-out"
-           style={{ transform: `translateX(-${currentVideo * 100}%)` }}>
+      <div className={`flex transition-transform duration-700 ease-in-out ${isRTL ? 'flex-row-reverse' : ''}`}
+           style={{ transform: `translateX(${isRTL ? '' : '-'}${currentVideo * 100}%)` }}>
         {highlights.map((highlight, index) => (
           <div key={highlight.id} className="w-full flex-shrink-0 px-4">
             <div className="relative h-[70vh] rounded-3xl overflow-hidden">
@@ -299,7 +306,7 @@ const VideoCarousel = () => {
                 <div className="absolute inset-0 bg-black/20" />
                 
                 {/* Content Overlay */}
-                <div className="absolute top-12 left-8 z-10 text-white">
+                <div className={`absolute top-12 left-8 z-10 text-white ${isRTL ? 'right-8 left-auto text-right' : ''}`}>
                   {highlight.title.map((line, i) => (
                     <p key={i} className="text-2xl md:text-4xl font-semibold mb-2">
                       {line}
@@ -366,6 +373,7 @@ const VideoCarousel = () => {
 
 // Highlights Section
 const Highlights = () => {
+  const { t, isRTL } = useLanguage();
   const sectionRef = useRef();
   useScrollAnimation(sectionRef);
 
@@ -373,23 +381,23 @@ const Highlights = () => {
     <section id="highlights" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={sectionRef} className="opacity-0 translate-y-10 transition-all duration-1000">
-          <div className="text-center mb-16">
+          <div className={`text-center mb-16 ${isRTL ? 'text-center' : ''}`}>
             <h2 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
-              Choose Your <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Garden</span>
+              {t('chooseYourHighlights')}
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full" />
           </div>
 
           <VideoCarousel />
           
-          <div className="flex flex-col md:flex-row justify-center items-center gap-6 mt-12">
-            <a href="#" className="flex items-center text-green-600 hover:text-green-700 transition-colors font-medium">
-              <span className="mr-2">Watch the film</span>
+          <div className={`flex flex-col md:flex-row justify-center items-center gap-6 mt-12 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
+            <a href="#" className={`flex items-center text-green-600 hover:text-green-700 transition-colors font-medium ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <span className={isRTL ? 'ml-2' : 'mr-2'}>{t('watchFilm')}</span>
               <Play className="w-5 h-5" />
             </a>
-            <a href="#" className="flex items-center text-green-600 hover:text-green-700 transition-colors font-medium">
-              <span className="mr-2">Watch the event</span>
-              <ChevronRight className="w-5 h-5" />
+            <a href="#" className={`flex items-center text-green-600 hover:text-green-700 transition-colors font-medium ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <span className={isRTL ? 'ml-2' : 'mr-2'}>{t('watchEvent')}</span>
+              <ChevronRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
             </a>
           </div>
         </div>
@@ -400,6 +408,7 @@ const Highlights = () => {
 
 // Features Section
 const Features = () => {
+  const { t, isRTL } = useLanguage();
   const sectionRef = useRef();
   const titleRef = useRef();
   
@@ -410,20 +419,20 @@ const Features = () => {
     <section className="py-20 bg-gradient-to-br from-gray-50 to-green-50 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={titleRef} className="opacity-0 translate-y-10 transition-all duration-1000 mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold text-gray-800 text-center mb-6">
-            Explore the full <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">story</span>
+          <h2 className={`text-4xl md:text-6xl font-bold text-gray-800 text-center mb-6 ${isRTL ? 'text-center' : ''}`}>
+            {t('exploreFullStory')}
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full" />
         </div>
 
         <div ref={sectionRef} className="opacity-0 translate-y-10 transition-all duration-1000 delay-300">
           {/* Main Title */}
-          <div className="text-center mb-16">
+          <div className={`text-center mb-16 ${isRTL ? 'text-center' : ''}`}>
             <h3 className="text-6xl md:text-8xl font-bold text-gray-800 leading-tight">
-              Nelover.
+              {t('neloverSmart').split('.')[0]}.
             </h3>
             <h3 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent leading-tight">
-              Smart. Sustainable. Pro.
+              {t('neloverSmart').split('.').slice(1).join('.')}
             </h3>
           </div>
 
@@ -431,12 +440,12 @@ const Features = () => {
           <div className="mb-16">
             <div className="aspect-video bg-gradient-to-br from-green-100 to-emerald-200 rounded-3xl overflow-hidden relative shadow-2xl">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-green-800">
+                <div className={`text-center text-green-800 ${isRTL ? 'text-center' : ''}`}>
                   <div className="w-24 h-24 bg-white/30 rounded-2xl flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
                     <Wifi className="w-12 h-12 text-green-600" />
                   </div>
-                  <h4 className="text-2xl font-bold mb-2">Smart Growing Technology</h4>
-                  <p className="text-green-700">AI-powered optimization in action</p>
+                  <h4 className="text-2xl font-bold mb-2">{t('smartGrowingTech')}</h4>
+                  <p className="text-green-700">{t('aiOptimization')}</p>
                 </div>
               </div>
               {/* Decorative elements */}
@@ -449,35 +458,35 @@ const Features = () => {
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             <div className="aspect-video bg-gradient-to-br from-blue-100 to-cyan-200 rounded-3xl overflow-hidden relative group shadow-lg">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-blue-800">
+                <div className={`text-center text-blue-800 ${isRTL ? 'text-center' : ''}`}>
                   <Droplets className="w-16 h-16 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" />
-                  <h4 className="text-xl font-bold">Hydroponic System</h4>
-                  <p className="text-blue-600 text-sm mt-2">Clean, efficient growing</p>
+                  <h4 className="text-xl font-bold">{t('hydroponicSystem')}</h4>
+                  <p className="text-blue-600 text-sm mt-2">{t('cleanEfficient')}</p>
                 </div>
               </div>
             </div>
             
             <div className="aspect-video bg-gradient-to-br from-orange-100 to-yellow-200 rounded-3xl overflow-hidden relative group shadow-lg">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-orange-800">
+                <div className={`text-center text-orange-800 ${isRTL ? 'text-center' : ''}`}>
                   <Sun className="w-16 h-16 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" />
-                  <h4 className="text-xl font-bold">LED Grow Lights</h4>
-                  <p className="text-orange-600 text-sm mt-2">Full spectrum nutrition</p>
+                  <h4 className="text-xl font-bold">{t('ledGrowLights')}</h4>
+                  <p className="text-orange-600 text-sm mt-2">{t('fullSpectrumNutrition')}</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Feature Text */}
-          <div className="grid md:grid-cols-2 gap-12 text-gray-700">
+          <div className={`grid md:grid-cols-2 gap-12 text-gray-700 ${isRTL ? 'text-right' : ''}`}>
             <div>
               <p className="text-lg leading-relaxed">
-                Nelover Garden Pro is <span className="text-green-600 font-semibold">the first smart indoor garden to feature AI-powered growing optimization</span>, using advanced hydroponic technology for perfect plant growth.
+                {t('smartGrowingDescription')}
               </p>
             </div>
             <div>
               <p className="text-lg leading-relaxed">
-                Our intelligent system monitors every aspect of plant health, making indoor gardening <span className="text-green-600 font-semibold">effortless and rewarding for everyone</span>. You'll notice the difference from day one.
+                {t('effortlessRewarding')}
               </p>
             </div>
           </div>
@@ -486,8 +495,10 @@ const Features = () => {
     </section>
   );
 };
+
 // Model/Product Showcase Section
 const ProductShowcase = () => {
+  const { t, isRTL } = useLanguage();
   const [selectedColor, setSelectedColor] = useState(0);
   const [selectedSize, setSelectedSize] = useState('compact');
   const sectionRef = useRef();
@@ -495,29 +506,41 @@ const ProductShowcase = () => {
   useScrollAnimation(sectionRef);
 
   const models = [
-    { name: 'Garden Compact in Natural Wood', colors: ['#8B4513', '#D2691E', '#A0522D'], price: '$299' },
-    { name: 'Garden Plus in Modern White', colors: ['#F5F5F5', '#E0E0E0', '#D3D3D3'], price: '$599' },
-    { name: 'Garden Pro in Premium Black', colors: ['#2F2F2F', '#1C1C1C', '#0A0A0A'], price: '$999' },
+    { 
+      name: t('language') === 'en' ? 'Garden Compact in Natural Wood' : 'حديقة مدمجة بالخشب الطبيعي', 
+      colors: ['#8B4513', '#D2691E', '#A0522D'], 
+      price: '$299' 
+    },
+    { 
+      name: t('language') === 'en' ? 'Garden Plus in Modern White' : 'حديقة بلس بالأبيض العصري', 
+      colors: ['#F5F5F5', '#E0E0E0', '#D3D3D3'], 
+      price: '$599' 
+    },
+    { 
+      name: t('language') === 'en' ? 'Garden Pro in Premium Black' : 'حديقة برو بالأسود الفاخر', 
+      colors: ['#2F2F2F', '#1C1C1C', '#0A0A0A'], 
+      price: '$999' 
+    },
   ];
 
   const sizes = [
-    { label: 'Compact', value: 'compact' },
-    { label: 'Plus', value: 'plus' },
-    { label: 'Pro', value: 'pro' }
+    { label: t('language') === 'en' ? 'Compact' : 'مدمج', value: 'compact' },
+    { label: t('language') === 'en' ? 'Plus' : 'بلس', value: 'plus' },
+    { label: t('language') === 'en' ? 'Pro' : 'برو', value: 'pro' }
   ];
 
   return (
     <section className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <div ref={sectionRef} className="opacity-0 translate-y-10 transition-all duration-1000">
-          <h2 className="text-4xl md:text-6xl font-light text-center text-gray-900 mb-16">
-            Take a closer look.
+          <h2 className={`text-4xl md:text-6xl font-light text-center text-gray-900 mb-16 ${isRTL ? 'text-center' : ''}`}>
+            {t('takeCloserLook')}
           </h2>
 
           {/* Product Display */}
           <div className="relative h-[80vh] mb-12 bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
+              <div className={`text-center ${isRTL ? 'text-center' : ''}`}>
                 <div className="w-64 h-64 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl transform hover:scale-105 transition-transform duration-500">
                   <Leaf className="w-32 h-32 text-white" />
                 </div>
@@ -538,10 +561,10 @@ const ProductShowcase = () => {
 
           {/* Controls */}
           <div className="text-center">
-            <p className="text-lg text-gray-600 mb-8">{models[selectedColor].name}</p>
+            <p className={`text-lg text-gray-600 mb-8 ${isRTL ? 'text-center' : ''}`}>{models[selectedColor].name}</p>
             
             {/* Color Selection */}
-            <div className="flex justify-center items-center mb-8">
+            <div className={`flex justify-center items-center mb-8 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <div className="flex space-x-4 bg-gray-100 rounded-full p-2">
                 {models.map((model, index) => (
                   <button
@@ -556,7 +579,7 @@ const ProductShowcase = () => {
               </div>
               
               {/* Size Selection */}
-              <div className="flex space-x-2 bg-gray-900 rounded-full p-1 ml-8">
+              <div className={`flex space-x-2 bg-gray-900 rounded-full p-1 ${isRTL ? 'mr-8' : 'ml-8'}`}>
                 {sizes.map((size) => (
                   <button
                     key={size.value}
@@ -581,6 +604,7 @@ const ProductShowcase = () => {
 
 // How It Works Section
 const HowItWorks = () => {
+  const { t, isRTL } = useLanguage();
   const sectionRef = useRef();
   const chipRef = useRef();
   
@@ -599,15 +623,15 @@ const HowItWorks = () => {
 
         <div ref={sectionRef} className="opacity-0 translate-y-10 transition-all duration-1000">
           {/* Title */}
-          <div className="text-center mb-16">
+          <div className={`text-center mb-16 ${isRTL ? 'text-center' : ''}`}>
             <h2 className="text-5xl md:text-7xl font-bold text-gray-800 mb-6">
-              AI Pro chip.
+              {t('aiProChip')}
             </h2>
             <h3 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-8">
-              A revolution in smart gardening.
+              {t('language') === 'en' ? 'A revolution in smart gardening.' : 'ثورة في البستنة الذكية.'}
             </h3>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              It's here. The most advanced indoor gardening system ever created.
+              {t('mostAdvanced')}
             </p>
           </div>
 
@@ -619,32 +643,36 @@ const HowItWorks = () => {
               
               {/* Content */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-gray-800">
+                <div className={`text-center text-gray-800 ${isRTL ? 'text-center' : ''}`}>
                   <div className="w-20 h-20 bg-green-500/20 rounded-xl flex items-center justify-center mx-auto mb-6">
                     <Wifi className="w-10 h-10 text-green-600" />
                   </div>
-                  <h4 className="text-xl font-bold">Smart Garden Interface</h4>
+                  <h4 className="text-xl font-bold">{t('smartGardenInterface')}</h4>
                 </div>
               </div>
             </div>
-            <p className="text-gray-600 text-center mt-4 font-medium">Smart Garden Interface</p>
+            <p className={`text-gray-600 text-center mt-4 font-medium ${isRTL ? 'text-center' : ''}`}>{t('smartGardenInterface')}</p>
           </div>
 
           {/* Feature Text */}
-          <div className="grid md:grid-cols-2 gap-12 text-gray-700">
+          <div className={`grid md:grid-cols-2 gap-12 text-gray-700 ${isRTL ? 'text-right' : ''}`}>
             <div>
               <p className="text-lg leading-relaxed mb-6">
-                AI Pro delivers our <span className="text-green-600 font-semibold">most intelligent growing system by far</span>.
+                {t('mostIntelligent')}
               </p>
               <p className="text-lg leading-relaxed">
-                Your plants will <span className="text-green-600 font-semibold">thrive like never before</span>, with perfectly optimized growing conditions and automated care.
+                {t('thriveNeverBefore')}
               </p>
             </div>
             
-            <div className="text-center md:text-left">
-              <p className="text-green-600 text-sm font-medium mb-2">New</p>
-              <p className="text-4xl font-bold text-gray-800 mb-2">Pro-class AI</p>
-              <p className="text-gray-600">with smart sensors</p>
+            <div className={`${isRTL ? 'text-right' : 'text-center md:text-left'}`}>
+              <p className="text-green-600 text-sm font-medium mb-2">
+                {t('language') === 'en' ? 'New' : 'جديد'}
+              </p>
+              <p className="text-4xl font-bold text-gray-800 mb-2">
+                {t('proClassAI').split(' ')[0]} {t('proClassAI').split(' ')[1]}
+              </p>
+              <p className="text-gray-600">{t('proClassAI').split(' ').slice(2).join(' ')}</p>
             </div>
           </div>
         </div>
