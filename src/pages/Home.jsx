@@ -136,46 +136,6 @@ const ProductsSection = () => {
   return (
     <section id="products-section" className="py-20 bg-gradient-to-b from-white to-green-50">
       <div className={`max-w-7xl mx-auto px-6 ${isRTL ? 'rtl' : 'ltr'}`}>
-        {/* Section Header with Product Links */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-            {t('chooseYourGarden')}
-          </h2>
-          <p className="text-xl text-gray-600 mb-8">{t('discoverProducts')}</p>
-          
-          {/* Quick Product Navigation */}
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <Link 
-              to="/garden-pro-elite"
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full font-medium transition-colors duration-300 flex items-center"
-            >
-              <Zap className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {t('eliteSeries')}
-            </Link>
-            <Link 
-              to="/garden-compact"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-medium transition-colors duration-300 flex items-center"
-            >
-              <Leaf className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {t('compactSeries')}
-            </Link>
-            <Link 
-              to="/garden-hydro-max"
-              className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-full font-medium transition-colors duration-300 flex items-center"
-            >
-              <Droplets className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {t('proSeries')}
-            </Link>
-            <Link 
-              to="/smart-tower-vertical"
-              className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-full font-medium transition-colors duration-300 flex items-center"
-            >
-              <Sun className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {t('towerSeries')}
-            </Link>
-          </div>
-        </div>
-
         {/* Product Cards Grid */}
         <AnnouncementCards/>
         

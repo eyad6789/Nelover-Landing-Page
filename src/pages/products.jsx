@@ -589,19 +589,6 @@ const Products = () => {
           <div className={`transition-all duration-1000 ${
             isVisible['products-grid'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
-            {/* Section Header */}
-            <div className={`text-center mb-12 ${isRTL ? 'text-center' : ''}`}>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                {selectedCategory === 'all' ? t('allProducts') : categories.find(c => c.id === selectedCategory)?.name}
-              </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                {t('language') === 'en' 
-                  ? 'Discover our premium selection of smart gardening solutions designed to bring fresh, healthy produce to your home.'
-                  : 'اكتشف مجموعتنا المتميزة من حلول البستنة الذكية المصممة لجلب المنتجات الطازجة والصحية إلى منزلك.'
-                }
-              </p>
-            </div>
-
             {/* Products Grid */}
             {filteredProducts.length === 0 ? (
               <div className="text-center py-12">
@@ -661,7 +648,7 @@ const Products = () => {
                 description: t('professionalAccessories'),
                 count: `6 ${t('productsCount')}`,
                 image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&h=400&fit=crop',
-                color: 'from-blue-500 to-cyan-500'
+                color: 'from-indigo-500 to-cyan-500'
               },
               {
                 id: 'pods',
