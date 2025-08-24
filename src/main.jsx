@@ -5,7 +5,7 @@ import App from './App.jsx'  // Import App, not Home
 import ProductDetails from './pages/ProductDetails.jsx'  
 import ContactPage from './pages/Contact.jsx'    
 import AboutUs from './pages/AboutUs.jsx'    
-import Products from './pages/products.jsx' 
+import Products from './pages/Products.jsx' 
 import Home from './pages/Home.jsx' // Import Home from the correct location
 
 // Import your beautiful 404 page
