@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Leaf, Menu, X, Globe } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom'; // ADD THIS IMPORT
 // Import your existing LanguageContext hook
 import { useLanguage } from '../context/LanguageContext'; // Adjust path as needed
 
@@ -7,6 +8,9 @@ const Navbar = ({ currentPage = 'home' }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showLanguageTooltip, setShowLanguageTooltip] = useState(false);
+  
+  // Add navigate hook
+  const navigate = useNavigate();
   
   // Use the global language context instead of local state
   const { language, isRTL, toggleLanguage, t } = useLanguage();
@@ -27,12 +31,14 @@ const Navbar = ({ currentPage = 'home' }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // FIXED: Use navigate instead of window.location.href
   const handleShopNowClick = () => {
-    window.location.href = '/productsOptimized';
+    navigate('/productsOptimized');
   };
 
+  // FIXED: Use navigate instead of window.location.href
   const handleNavigation = (path) => {
-    window.location.href = path;
+    navigate(path);
   };
 
   return (
@@ -41,8 +47,8 @@ const Navbar = ({ currentPage = 'home' }) => {
     }`}>
       <div className="w-11/12 mx-auto px-4 sm:px-6 lg:px-8">
         <nav className={`flex items-center justify-between h-16 md:h-20 ${isRTL ? 'flex-row-reverse' : ''}`}>
-          {/* Enhanced Logo */}
-          <div className={`flex-shrink-0 flex items-center space-x-3 group cursor-pointer ${isRTL ? 'space-x-reverse' : ''}`} onClick={() => handleNavigation('/')}>
+          {/* Enhanced Logo - FIXED: Use Link instead of div with onClick */}
+          <Link to="/" className={`flex-shrink-0 flex items-center space-x-3 group cursor-pointer ${isRTL ? 'space-x-reverse' : ''}`}>
             <div className="relative">
               <Leaf className={`w-8 h-8 transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 ${
                 scrolled ? 'text-green-600' : 'text-green-400'
@@ -61,14 +67,14 @@ const Navbar = ({ currentPage = 'home' }) => {
                 {t('smartGardens')}
               </span>
             </div>
-          </div>
+          </Link>
 
-          {/* Enhanced Desktop Navigation */}
+          {/* Enhanced Desktop Navigation - FIXED: Use Link instead of <a> */}
           <div className="hidden md:flex items-center space-x-1 flex-1 justify-center">
             {navLists.map((nav) => (
-              <a
+              <Link
                 key={nav.id}
-                href={nav.path}
+                to={nav.path}
                 className={`px-4 py-2 text-sm lg:text-base font-medium transition-all duration-300 ease-in-out relative group rounded-full ${
                   currentPage === nav.id 
                     ? `${scrolled ? 'text-green-600 bg-green-50' : 'text-green-300 bg-white/10'}` 
@@ -79,7 +85,7 @@ const Navbar = ({ currentPage = 'home' }) => {
                 <span className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-green-400 to-emerald-400 transition-all duration-300 rounded-full ${
                   currentPage === nav.id ? 'w-6' : 'w-0 group-hover:w-6'
                 }`}></span>
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -158,15 +164,15 @@ const Navbar = ({ currentPage = 'home' }) => {
           </button>
         </nav>
 
-        {/* Enhanced Mobile Menu */}
+        {/* Enhanced Mobile Menu - FIXED: Use Link instead of <a> */}
         <div className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
           isMobileMenuOpen ? 'max-h-96 opacity-100 pb-4' : 'max-h-0 opacity-0'
         }`}>
           <div className="bg-white/95 backdrop-blur-lg rounded-2xl mt-2 p-4 shadow-2xl border border-green-100">
             {navLists.map((nav, index) => (
-              <a
+              <Link
                 key={nav.id}
-                href={nav.path}
+                to={nav.path}
                 className={`block px-4 py-3 text-base font-medium rounded-xl transition-all duration-200 mb-1 ${
                   currentPage === nav.id
                     ? 'text-green-600 bg-green-50 font-semibold'
@@ -176,7 +182,7 @@ const Navbar = ({ currentPage = 'home' }) => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {nav.label}
-              </a>
+              </Link>
             ))}
             
             {/* Mobile Language Toggle */}
