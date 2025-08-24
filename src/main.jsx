@@ -1,22 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import App from './App.jsx'  // Import App, not Home
+import { HashRouter as Router, Routes, Route } from 'react-router-dom'
+import App from './App.jsx'
 import ProductDetails from './pages/ProductDetails.jsx'  
 import ContactPage from './pages/Contact.jsx'    
 import AboutUs from './pages/AboutUs.jsx'    
-import Products from './pages/Products.jsx'  // This should probably be Products, not ProductDetails
-import Home from './pages/Home.jsx' // Import Home from the correct location
-
-// Import your beautiful 404 page
+import Products from './pages/Products.jsx'
+import Home from './pages/Home.jsx'
 import Error404Page from './pages/Error404Page.jsx'
-
-// Import LanguageProvider
 import { LanguageProvider } from './context/LanguageContext'
 
 import './index.css'
 
-//...
 import * as Sentry from "@sentry/react";
 
 Sentry.init({
@@ -41,8 +36,8 @@ Sentry.init({
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <LanguageProvider>
-      {/* CRITICAL: Must match GitHub repo name exactly */}
-      <Router basename="/Nelover-Landing-Page">
+      {/* Using HashRouter - no basename needed */}
+      <Router>
         <Routes>
           {/* Main Routes */}
           <Route path="/" element={<Home />} />
