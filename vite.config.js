@@ -9,15 +9,16 @@ export default defineConfig({
     project: "javascript-react"
   })],
   
-  // Add this base path for GitHub Pages - MUST match your repo name exactly
-  base: '/Nelover-Landing-Page/',
+  // CRITICAL: Must match your GitHub repo name exactly
+  base: '/Nelover-Landing-Page',
   
   build: {
     sourcemap: true,
-    outDir: 'dist'
+    outDir: 'dist',
+    assetsDir: 'assets'
   },
   
   css: {
-    postcss: './postcss.config.js', // Tailwind will be processed through PostCSS
+    postcss: './postcss.config.js',
   }
 })
