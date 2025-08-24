@@ -9,11 +9,15 @@ export default defineConfig({
     project: "javascript-react"
   })],
   
-  // Add this base path for GitHub Pages (replace 'apple_website' with your repo name)
-  base: '/apple_website/',
+  // Add this base path for GitHub Pages - MUST match your repo name exactly
+  base: '/Nelover-Landing-Page/',
   
   build: {
     sourcemap: true,
     outDir: 'dist'
+  },
+  
+  css: {
+    postcss: './postcss.config.js', // Tailwind will be processed through PostCSS
   }
 })

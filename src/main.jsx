@@ -41,8 +41,8 @@ Sentry.init({
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <LanguageProvider>
-      {/* Updated Router with basename for GitHub Pages */}
-      <Router basename="/apple_website">
+      {/* Updated Router with basename for GitHub Pages - MUST match repo name */}
+      <Router basename="/Nelover-Landing-Page">
         <Routes>
           {/* Main Routes */}
           <Route path="/" element={<Home />} />
