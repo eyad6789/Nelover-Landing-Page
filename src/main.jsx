@@ -5,7 +5,7 @@ import App from './App.jsx'  // Import App, not Home
 import ProductDetails from './pages/ProductDetails.jsx'  
 import ContactPage from './pages/Contact.jsx'    
 import AboutUs from './pages/AboutUs.jsx'    
-import Products from './pages/Products.jsx'  // This should probably be Products, not ProductDetails
+import Products from './pages/products.jsx' 
 import Home from './pages/Home.jsx' // Import Home from the correct location
 
 // Import your beautiful 404 page
@@ -41,7 +41,8 @@ Sentry.init({
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <LanguageProvider>
-      <Router>
+      {/* Updated Router with basename for GitHub Pages */}
+      <Router basename="/apple_website">
         <Routes>
           {/* Main Routes */}
           <Route path="/" element={<Home />} />
