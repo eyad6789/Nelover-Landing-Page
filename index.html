@@ -1,13 +1,1011 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./public/Nelover-logo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nelover</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <title>Nelover — Living Terrariums</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --black: #080b07;
+      --deep: #0a140e;
+      --forest: #0f1f12;
+      --green-dark: #1a3320;
+      --green-mid: #2d5a3d;
+      --green-vivid: #3d8b5c;
+      --green-light: #6abf85;
+      --gold: #d4af37;
+      --gold-light: #e8c97a;
+      --cream: #f5f0e8;
+      --moss: #4a6741;
+    }
+
+    /* CSS Reset */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--black);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--green-dark);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--gold);
+    }
+
+    /* CUSTOM CURSOR */
+    .cursor,
+    .cursor-ring {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
+    }
+
+    .cursor {
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      mix-blend-mode: difference;
+    }
+
+    .cursor-ring {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--gold);
+      opacity: 0.6;
+      transition: width 0.3s ease, height 0.3s ease, opacity 0.3s;
+    }
+
+    .cursor.hovering {
+      width: 20px;
+      height: 20px;
+      background: var(--green-light);
+    }
+
+    .cursor-ring.hovering {
+      width: 60px;
+      height: 60px;
+      opacity: 0.3;
+    }
+
+    /* FULL PAGE CANVAS Background */
+    #webgl-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Noise Texture Overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9997;
+      opacity: 0.4;
+    }
+
+    /* NAVIGATION */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 24px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(8, 11, 7, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+      transition: padding 0.3s ease;
+    }
+
+    .logo {
+      font-family: 'Cinzel', serif;
+      font-size: 24px;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .logo span {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.5em;
+      color: var(--green-light);
+      margin-top: 2px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 48px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: var(--cream);
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.8;
+      transition: opacity 0.3s, color 0.3s;
+    }
+
+    nav ul li a:hover {
+      opacity: 1;
+      color: var(--gold-light);
+    }
+
+    .nav-cta {
+      border: 1px solid var(--gold);
+      padding: 12px 32px;
+      border-radius: 2px;
+      color: var(--gold) !important;
+      transition: background 0.3s, color 0.3s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--gold) !important;
+      color: var(--black) !important;
+    }
+
+    /* GLOBAL SECTION RULES */
+    section {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      background: transparent;
+    }
+
+    .section-eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--green-light);
+    }
+
+    /* HERO */
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 60px;
+      overflow: hidden;
+      background: radial-gradient(circle at 70% 50%, rgba(29, 83, 42, 0.15) 0%, transparent 60%);
+    }
+
+    .hero-content {
+      max-width: 700px;
+      animation: fadeUp 1s 0.3s ease forwards;
+      opacity: 0;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(70px, 9vw, 130px);
+      line-height: 0.9;
+      margin-bottom: 32px;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      line-height: 1.6;
+      color: rgba(245, 240, 232, 0.7);
+      margin-bottom: 48px;
+      max-width: 500px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 24px;
+    }
+
+    .btn-primary,
+    .btn-outline {
+      padding: 18px 48px;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-block;
+      cursor: none;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+    }
+
+    .btn-outline {
+      border: 1px solid rgba(245, 240, 232, 0.3);
+      color: var(--cream);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--green-light);
+      color: var(--green-light);
+      transform: translateY(-2px);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 60px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.5);
+      animation: fadeIn 2s 1.5s ease forwards;
+      opacity: 0;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scroll-pulse 2s infinite;
+    }
+
+    /* ABOUT SECTION */
+    .about {
+      padding: 160px 60px;
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: 100px;
+      align-items: center;
+      background: linear-gradient(180deg, rgba(8, 11, 7, 0) 0%, rgba(10, 20, 14, 0.95) 20%, rgba(10, 20, 14, 0.98) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(212, 175, 55, 0.05);
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .about-img-frame {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      position: relative;
+      background: radial-gradient(circle, rgba(45, 90, 61, 0.2) 0%, transparent 70%);
+    }
+
+    .about-img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.8;
+      transition: transform 10s ease;
+    }
+
+    .about-img-frame:hover img {
+      transform: scale(1.05);
+    }
+
+    .about-text {
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(245, 240, 232, 0.7);
+      margin-top: 32px;
+      max-width: 600px;
+    }
+
+    .about-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 56px;
+    }
+
+    .feature-item {
+      border-left: 2px solid var(--green-mid);
+      padding-left: 24px;
+    }
+
+    .feature-item strong {
+      display: block;
+      color: var(--cream);
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .feature-item span {
+      font-size: 13px;
+      color: rgba(245, 240, 232, 0.5);
+      line-height: 1.6;
+    }
+
+    /* PRODUCTS */
+    .products {
+      padding: 160px 60px;
+      background: rgba(10, 20, 14, 0.98);
+      position: relative;
+      z-index: 10;
+    }
+
+    .products-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 80px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .product-card {
+      background: rgba(15, 31, 18, 0.6);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.5s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-12px);
+      border-color: rgba(212, 175, 55, 0.5);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .product-img {
+      height: 400px;
+      position: relative;
+      background: radial-gradient(circle, #1a2d1a, #0f1f12);
+      overflow: hidden;
+    }
+
+    .product-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+      transition: transform 0.5s ease;
+    }
+
+    .product-card:hover .product-img img {
+      transform: scale(1.05);
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: var(--gold);
+      color: var(--black);
+      padding: 6px 16px;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .product-info {
+      padding: 40px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-model {
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .product-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .product-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(245, 240, 232, 0.6);
+      margin-bottom: 32px;
+    }
+
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 24px;
+      border-top: 1px solid rgba(245, 240, 232, 0.1);
+    }
+
+    .product-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      color: var(--gold-light);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 100px 60px 40px;
+      background: linear-gradient(180deg, rgba(10, 20, 14, 0.98) 0%, rgba(8, 11, 7, 1) 100%);
+      border-top: 1px solid rgba(245, 240, 232, 0.1);
+      position: relative;
+      z-index: 10;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 80px;
+    }
+
+    .footer-col h4 {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .footer-links a {
+      color: rgba(245, 240, 232, 0.5);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold-light);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 40px;
+      border-top: 1px solid rgba(245, 240, 232, 0.1);
+      font-size: 12px;
+      color: rgba(245, 240, 232, 0.4);
+    }
+
+    /* ANIMATIONS & UTILS */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes scroll-pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scaleY(1);
+      }
+
+      50% {
+        opacity: 0.3;
+        transform: scaleY(0.6);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .delay-1 {
+      transition-delay: 0.1s;
+    }
+
+    .delay-2 {
+      transition-delay: 0.2s;
+    }
+  </style>
+
+  <!-- Three.js and GSAP via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Background WebGL Canvas -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <nav id="navbar">
+    <a href="#" class="logo">
+      Nelover
+      <span>Living Terrariums</span>
+    </a>
+    <ul>
+      <li><a href="#about">Philosophy</a></li>
+      <li><a href="#products">Collection</a></li>
+      <li><a href="#products" class="nav-cta">Shop Now</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="section-eyebrow">Artisan Living Gardens</div>
+      <h1>Where Nature<br><em>Becomes</em> <span style="color:var(--gold); font-weight: 500;">Art</span></h1>
+      <p class="hero-sub">Handcrafted living terrariums that transform any space into a thriving, breathing ecosystem.
+        Each piece is a unique work of botanical art.</p>
+      <div class="hero-actions">
+        <a href="#products" class="btn-primary">Explore Collection</a>
+        <a href="#about" class="btn-outline">Our Story</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Scroll to explore
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="about-visual reveal">
+      <div class="about-img-frame">
+        <img src="assets/about_garden.png" alt="Handcrafting terrariums" onerror="this.style.display='none'">
+      </div>
+    </div>
+    <div class="about-text-content reveal delay-1">
+      <div class="section-eyebrow">Our Philosophy</div>
+      <h2 class="section-title">Bringing the <em>Living Forest</em><br>Into Your World</h2>
+      <p class="about-text">
+        Every terrarium we create is a miniature universe — a living, breathing ecosystem that evolves over time. We
+        source rare mosses, tropical plants, and botanical curiosities from sustainable growers worldwide, then craft
+        them by hand into extraordinary living art.
+      </p>
+      <div class="about-features">
+        <div class="feature-item">
+          <strong>Rare Botanicals</strong>
+          <span>Sourced from sustainable growers in 12 countries.</span>
+        </div>
+        <div class="feature-item">
+          <strong>Self-Sustaining</strong>
+          <span>Closed-loop ecosystems requiring minimal care.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="products" id="products">
+    <div class="products-header reveal">
+      <div>
+        <div class="section-eyebrow">The Collection</div>
+        <h2 class="section-title">Three <em>Masterpieces</em></h2>
+      </div>
+    </div>
+
+    <div class="products-grid">
+      <div class="product-card reveal delay-1">
+        <div class="product-badge">Flagship</div>
+        <div class="product-img">
+          <img src="assets/hero_xl.png" alt="Model X" onerror="this.style.display='none'">
+        </div>
+        <div class="product-info">
+          <div>
+            <div class="product-model">Model X</div>
+            <div class="product-name">The Mountain</div>
+            <div class="product-desc">Our largest, most dramatic creation. Rocky outcrops, cascading mosses, and misting
+              systems.</div>
+          </div>
+          <div class="product-footer">
+            <div class="product-price">$1,299</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal delay-2">
+        <div class="product-badge" style="background:var(--green-light); color:var(--black);">Bestseller</div>
+        <div class="product-img">
+          <img src="assets/hero_woodland.png" alt="Model A" onerror="this.style.display='none'">
+        </div>
+        <div class="product-info">
+          <div>
+            <div class="product-model" style="color:var(--green-light)">Model A</div>
+            <div class="product-name">The Woodland</div>
+            <div class="product-desc">Twisted driftwood draped in living moss and miniature ferns. A forest in
+              miniature.</div>
+          </div>
+          <div class="product-footer">
+            <div class="product-price">$849</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal delay-1">
+        <div class="product-img">
+          <img src="assets/hero_moss.png" alt="Model S" onerror="this.style.display='none'">
+        </div>
+        <div class="product-info">
+          <div>
+            <div class="product-model" style="color: rgba(245,240,232,0.6);">Model S</div>
+            <div class="product-name">The Mossscape</div>
+            <div class="product-desc">Pure elegance. A curated composition of rare mosses and crystalline stones.
+              Minimalist design.</div>
+          </div>
+          <div class="product-footer">
+            <div class="product-price">$499</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="logo" style="margin-bottom: 16px;">Nelover<span>Living Terrariums</span></div>
+        <p style="font-size: 14px; color: rgba(245,240,232,0.5); line-height: 1.6; max-width: 250px;">
+          Handcrafted living ecosystems created with artisan care.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul class="footer-links">
+          <li><a href="#products">Collection</a></li>
+          <li><a href="#about">Philosophy</a></li>
+          <li><a href="#">Custom Commissions</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul class="footer-links">
+          <li><a href="#">Care Guides</a></li>
+          <li><a href="#">Shipping Details</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Nelover Living Terrariums. All rights reserved.</span>
+      <span style="color:var(--gold);letter-spacing:0.2em;">Crafted with love for the living world.</span>
+    </div>
+  </footer>
+
+  <script>
+    // Custom Cursor Logic
+    const cursor = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursorRing');
+
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      setTimeout(() => {
+        cursorRing.style.left = e.clientX + 'px';
+        cursorRing.style.top = e.clientY + 'px';
+      }, 50);
+    });
+
+    document.querySelectorAll('a, button, .product-card').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.add('hovering');
+        cursorRing.classList.add('hovering');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hovering');
+        cursorRing.classList.remove('hovering');
+      });
+    });
+
+    // Intersection Observer for Animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // --- 3D procedural Terrarium with Three.js & GSAP ---
+    (function init3D() {
+      const canvas = document.getElementById('webgl-canvas');
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // No clear color makes the canvas completely transparent. Background is handled by CSS correctly.
+      renderer.setClearColor(0x000000, 0);
+
+      const scene = new THREE.Scene();
+
+      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.set(0, 0, 12);
+
+      // LIGHTING
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambientLight);
+      const directionalLight = new THREE.DirectionalLight(0xffeedd, 2.5);
+      directionalLight.position.set(5, 8, 5);
+      scene.add(directionalLight);
+      const fillLight = new THREE.DirectionalLight(0x8da399, 1.5);
+      fillLight.position.set(-5, 3, -5);
+      scene.add(fillLight);
+
+      // 3D MODEL
+      const terrariumGroup = new THREE.Group();
+      scene.add(terrariumGroup);
+
+      // Glass Dome
+      const glassGeo = new THREE.CylinderGeometry(2, 2, 4.5, 64);
+      const topGeo = new THREE.SphereGeometry(2, 64, 32, 0, Math.PI * 2, 0, Math.PI / 2);
+      topGeo.translate(0, 2.25, 0);
+      const glassMat = new THREE.MeshPhysicalMaterial({
+        color: 0xffffff,
+        transmission: 1,
+        opacity: 1,
+        metalness: 0.1,
+        roughness: 0.05,
+        ior: 1.52,
+        transparent: true,
+        side: THREE.BackSide
+      });
+      const glassCylinder = new THREE.Mesh(glassGeo, glassMat);
+      const glassTop = new THREE.Mesh(topGeo, glassMat);
+      terrariumGroup.add(glassCylinder);
+      terrariumGroup.add(glassTop);
+
+      // Inner Terrain
+      const terrainGeo = new THREE.SphereGeometry(1.9, 64, 32, 0, Math.PI * 2, 0, Math.PI / 2);
+      const terrainMat = new THREE.MeshStandardMaterial({
+        color: 0x1f3d2b,
+        roughness: 0.9,
+        flatShading: true
+      });
+      const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
+      terrainMesh.position.y = -2.3;
+      terrainMesh.scale.set(1, 0.6, 1);
+      terrariumGroup.add(terrainMesh);
+
+      // Tree Trunk
+      const trunkGeo = new THREE.CylinderGeometry(0.15, 0.25, 1.5, 8);
+      const trunkMat = new THREE.MeshStandardMaterial({ color: 0x4a3627, roughness: 1 });
+      const trunkMesh = new THREE.Mesh(trunkGeo, trunkMat);
+      trunkMesh.position.y = -1.2;
+      terrariumGroup.add(trunkMesh);
+
+      // Tree Leaves
+      const leafGeo = new THREE.IcosahedronGeometry(0.8, 1);
+      const leafMat = new THREE.MeshStandardMaterial({ color: 0x3d8b5c, roughness: 0.6, flatShading: true });
+      const leafMesh = new THREE.Mesh(leafGeo, leafMat);
+      leafMesh.position.y = -0.2;
+      terrariumGroup.add(leafMesh);
+
+      const leaf2 = new THREE.Mesh(leafGeo, new THREE.MeshStandardMaterial({ color: 0x6abf85, flatShading: true }));
+      leaf2.scale.set(0.7, 0.7, 0.7);
+      leaf2.position.set(0.6, -0.4, 0.4);
+      terrariumGroup.add(leaf2);
+
+      // Base
+      const baseGeo = new THREE.CylinderGeometry(2.1, 2.2, 0.6, 64);
+      const baseMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.8 });
+      const baseMesh = new THREE.Mesh(baseGeo, baseMat);
+      baseMesh.position.y = -2.55;
+      terrariumGroup.add(baseMesh);
+
+      // Particles
+      const particlesGeo = new THREE.BufferGeometry();
+      const pCount = 50;
+      const pPos = new Float32Array(pCount * 3);
+      for (let i = 0; i < pCount * 3; i += 3) {
+        pPos[i] = (Math.random() - 0.5) * 3;
+        pPos[i + 1] = (Math.random() - 0.5) * 4;
+        pPos[i + 2] = (Math.random() - 0.5) * 3;
+      }
+      particlesGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+      const pMat = new THREE.PointsMaterial({ color: 0xd4af37, size: 0.03, transparent: true, opacity: 0.6 });
+      const pSystem = new THREE.Points(particlesGeo, pMat);
+      terrariumGroup.add(pSystem);
+
+      // INITIAL STATE (Hero section, on the right)
+      terrariumGroup.position.set(4, 0, 0);
+      terrariumGroup.rotation.set(0.1, -0.3, 0);
+
+      let time = 0;
+      let targetRotX = 0;
+      let targetRotY = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 0.2;
+        const y = (e.clientY / window.innerHeight - 0.5) * 0.2;
+        targetRotX = y;
+        targetRotY = x;
+      });
+
+      function animate() {
+        requestAnimationFrame(animate);
+        time += 0.005;
+
+        // Gentle floating
+        terrariumGroup.position.y += Math.sin(time * 2) * 0.001;
+
+        // Particle swirling
+        pSystem.rotation.y = time * 0.2;
+
+        // Parallax cursor rotation
+        terrariumGroup.rotation.x += (targetRotX + 0.1 - terrariumGroup.rotation.x) * 0.05;
+
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // GSAP Scroll Animations
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Move from Hero to About (Center Left)
+      gsap.to(terrariumGroup.position, {
+        x: -4.0,
+        y: -1.0,
+        z: -2.0,
+        ease: 'power1.inOut',
+        scrollTrigger: {
+          trigger: '.about',
+          start: 'top bottom',
+          end: 'center center',
+          scrub: 1
+        }
+      });
+
+      // Move into Products
+      gsap.to(terrariumGroup.position, {
+        x: 0.0,
+        y: -2.0,
+        z: -6.0,
+        ease: 'power1.inOut',
+        scrollTrigger: {
+          trigger: '.products',
+          start: 'top bottom',
+          end: 'top center',
+          scrub: 1
+        }
+      });
+
+      // Move into Footer
+      gsap.to(terrariumGroup.position, {
+        x: 6.0,
+        y: -2.0,
+        z: -2.0,
+        ease: 'power1.inOut',
+        scrollTrigger: {
+          trigger: 'footer',
+          start: 'top bottom',
+          end: 'top center',
+          scrub: 1
+        }
+      });
+
+      // Resize logic
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    })();
+  </script>
+</body>
+
 </html>
